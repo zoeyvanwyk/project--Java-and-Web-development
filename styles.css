@@ -1,7 +1,9 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #FAF3F0;
 }
-h1 {
-    color: blue;
+
+#title {
+    background-color: #F4DADA ;
+    padding: 0 0 4.5rem;
 }
