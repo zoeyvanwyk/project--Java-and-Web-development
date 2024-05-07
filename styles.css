@@ -5,26 +5,44 @@ body {
 
 .header {
     background-color: #F4DADA ;
-    padding: 0 0 4.5rem;
+    padding: 0 0 4rem;
+    
 }
 
 .icon-bar {
     /*width: 100%;*/
     background-color: #DBE9B7;
     /*overflow: auto;*/
-  }
-
-.icon-bar li {
+    border-radius: 25px;
+    border: 2px solid #000000;
     /*width: 20%;*/
     text-align: center;
     padding: 12px 0;
-    transition: all 0.3s ease;
+    /*transition: all 0.3s ease;*/
     color: white;
     font-size: 20px;
+  }
+
+.icon-bar li {
+    /*width: 20%;
+    text-align: center;
+    padding: 12px 0;
+    /*transition: all 0.3s ease;
+    color: white;
+    font-size: 20px;*/
 }
 
 .navbar-brand{
     padding-left: 200px;
     padding-right:200px;
     border-radius: 25px;
+    background-color: #DBE9B7;
+    border: 2px solid #000000;
 }
+
+
+.categories {
+    padding-top:  225px;
+    text-align: center;
+}
+
