@@ -5,7 +5,7 @@ body {
 
 .header {
     background-color: #F4DADA ;
-    padding: 0 0 4rem;
+    padding: 0 0 3rem;
     
 }
 
@@ -23,18 +23,10 @@ body {
     font-size: 20px;
   }
 
-.icon-bar li {
-    /*width: 20%;
-    text-align: center;
-    padding: 12px 0;
-    /*transition: all 0.3s ease;
-    color: white;
-    font-size: 20px;*/
-}
 
 .navbar-brand{
-    padding-left: 200px;
-    padding-right:200px;
+    padding-left: 150px;
+    padding-right:150px;
     border-radius: 25px;
     background-color: #DBE9B7;
     border: 2px solid #000000;
@@ -42,7 +34,39 @@ body {
 
 
 .categories {
-    padding-top:  225px;
+    margin-top: 14rem;
+    /*padding-top:  225px;*/
     text-align: center;
 }
 
+.col{
+    background-color: #B8B2A6;
+    border: 2px solid #000000;
+}
+
+.footer{
+    width: 100%;
+    background-color: #F4DADA ;
+    /*border: 2px solid #000000;*/
+    margin-top: 4rem;
+}
+
+.bottom-info {
+    /*background-color: #F4DADA ;*/
+    padding: 4rem 0 4rem;
+    /*margin-top: 4rem;*/
+}
+
+.bottom{
+    background-color: #DBE9B7;
+    text-align: center;
+    padding-bottom: 25px;
+}
+
+h1 {
+    /*padding-bottom: 25px;*/
+    background-color: #B8B2A6;
+    border-radius: 25px;
+    /*width: 25%;*/
+    margin:25px 45%;
+}
