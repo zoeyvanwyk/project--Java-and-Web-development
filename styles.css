@@ -75,7 +75,12 @@ h1 {
     /*padding-bottom: 25px;*/
     background-color: #B8B2A6;
     border-radius: 25px;
-    /*width: 25%;*/
-    margin:25px 45%;
+    width: 25%;
+    margin:25px 39%;
+}
+
+.categoriesImages{
+    width: 300px;
+    height: 300px;
 }
 
