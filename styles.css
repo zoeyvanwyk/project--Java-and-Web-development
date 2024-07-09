@@ -1,6 +1,14 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #FAF3F0;
+    /*background-color: #FAF3F0;*/
+    background-image: url('images/background1.jpg');
+    background-size: cover; /* Cover the entire page */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+    background-attachment: fixed; /* Make the background image fixed on scroll */
+    background-position: center center; /* Center the background image */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    
 }
 
 .header {
@@ -70,3 +78,4 @@ h1 {
     /*width: 25%;*/
     margin:25px 45%;
 }
+
