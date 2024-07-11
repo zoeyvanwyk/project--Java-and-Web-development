@@ -18,8 +18,8 @@ loginButton.addEventListener("click", async (e) => {
         const result = await response.json();
 
         if (result.success) {
-            alert("You have successfully logged in.");
-            location.reload();
+            // alert("You have successfully logged in.");
+            window.location.href = '/'; // to redirect successful logins back to the main site
         } else {
             loginErrorMsg.style.opacity = 1;
         }

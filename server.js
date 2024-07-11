@@ -14,6 +14,9 @@ const pool = new Pool({
     port: 5432,
 });
 
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 
@@ -45,7 +48,7 @@ app.post('/login', async (req, res) => {
         }
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({success: false, error: 'Internal Server Error' });
     }
 });
 
@@ -58,6 +61,11 @@ app.get('/', (req, res) => {
 // Handle the login page
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login-page.html'));
+});
+
+// Handle the sign-up page
+app.get('/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'signup-page.html'));
 });
 
 app.listen(port, () => {
