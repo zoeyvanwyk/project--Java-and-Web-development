@@ -3,14 +3,15 @@ html {
     height: 100%;
   }
   
-login-page-body {
+body {
     height: 100%;
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     display: grid;
     justify-items: center;
     align-items: center;
-    background-color: #3a3a3a;
+    /* background-color: #3a3a3a; */
+    background-image: url('images/background2.jpg');
   }
   
   #main-holder {
