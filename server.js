@@ -42,9 +42,9 @@ app.post('/login', async (req, res) => {
         const result = await pool.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password]);
 
         if (result.rows.length > 0) {
-            res.json({ success: true });
+            res.status(200).json({ message: 'Login successful' });
         } else {
-            res.json({ success: false });
+            res.status(401).json({ error: 'Invalid credentials' });
         }
     } catch (err) {
         console.error(err);

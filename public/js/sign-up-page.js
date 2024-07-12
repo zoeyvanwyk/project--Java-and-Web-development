@@ -18,7 +18,7 @@ signupButton.addEventListener("click", async (e) => {
         });
 
         if (response.ok) {
-            window.location.href = "login-page.html";
+            window.location.href = "index.html";
         } else {
             signupErrorMsg.style.opacity = 1;
         }
