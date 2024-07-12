@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="login-page.css">
+    <script defer src="js/sign-up-page.js"></script>  
+</head>
+
+<body class="login-page-body">
+    <main id="main-holder">
+
+        <h1 id="login-header">Sign Up</h1>
+
+        <div id="signup-error-msg-holder">
+            <p id="signup-error-msg">Error: <span id="signup-error-msg-second-line">Invalid data</span></p>
+        </div>
+
+        <form id="signup-form">
+            <!-- username input field -->
+            <input type="text" name="username" id="signup-username-field" class="login-form-field" placeholder="Username">
+            <!-- password input field -->
+            <input type="password" name="password" id="signup-password-field" class="login-form-field" placeholder="Password">
+            <!-- email input field -->
+            <input type="email" name="email" id="signup-email-field" class="login-form-field" placeholder="Email">
+            <!-- sign up button -->
+            <input type="submit" value="Sign Up" id="signup-form-submit">
+          </form>
+
+    </main>
+
+</body>
+
+</html>

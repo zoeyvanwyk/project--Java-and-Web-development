@@ -53,6 +53,26 @@ app.post('/login', async (req, res) => {
 });
 
 
+// Handle sign-up requests
+app.post('/sign-up', async (req, res) => {
+    const { username, password, email } = req.body;
+
+    try {
+        const existingUser = await pool.query('SELECT * FROM users WHERE username = $1 OR email = $2', [username, email]);
+
+        if (existingUser.rows.length > 0) {
+            return res.status(400).json({ error: 'Username or email already exists' });
+        }
+
+        await pool.query('INSERT INTO users (username, password, email) VALUES ($1, $2, $3)', [username, password, email]);
+        res.status(200).json({ message: 'User registered successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
 // Handle the root URL
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
