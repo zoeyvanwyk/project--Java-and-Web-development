@@ -52,6 +52,23 @@ app.post('/login', async (req, res) => {
     }
 });
 
+// API endpoint to get category name by ID
+app.get('/api/category/:id', async (req, res) => {
+    const categoryId = req.params.id;
+  
+    try {
+      const result = await pool.query('SELECT category_name FROM Category WHERE CategoryID = $1', [categoryId]);
+      if (result.rows.length > 0) {
+        res.json({ categoryName: result.rows[0].categoryname });
+      } else {
+        res.status(404).json({ error: 'Category not found' });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
 
 // Handle sign-up requests
 app.post('/sign-up', async (req, res) => {
