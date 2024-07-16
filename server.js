@@ -55,19 +55,27 @@ app.post('/login', async (req, res) => {
 // API endpoint to get category name by ID
 app.get('/api/category/:id', async (req, res) => {
     const categoryId = req.params.id;
+
+    // to see what the output is while debuggin remove this later
+    // console.log(`Received request for category ID: ${categoryId}`);
+
   
     try {
-      const result = await pool.query('SELECT category_name FROM Category WHERE CategoryID = $1', [categoryId]);
-      if (result.rows.length > 0) {
+        const result = await pool.query('SELECT categoryname FROM Category WHERE CategoryID = $1', [categoryId]);
+    // console log here to see if error is here 
+        // console.log(`Query result: ${JSON.stringify(result.rows)}`);
+
+        if (result.rows.length > 0) {
         res.json({ categoryName: result.rows[0].categoryname });
-      } else {
-        res.status(404).json({ error: 'Category not found' });
-      }
+        } else {
+            console.log('Category not found');
+            res.status(404).json({ error: 'Category not found' });
+        }
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Internal Server Error' });
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-  });
+    });
 
 
 // Handle sign-up requests
