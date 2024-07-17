@@ -105,7 +105,7 @@ app.get('/api/category/:id', async (req, res) => {
 // });
 
 
-app.get('/api/products/:categoryId', async (req, res) => {
+app.get('/api/stock/:categoryId', async (req, res) => {
     const { categoryId } = req.params;
     try {
         const result = await pool.query('SELECT * FROM stock WHERE categoryid = $1', [categoryId]);

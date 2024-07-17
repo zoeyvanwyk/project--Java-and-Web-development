@@ -88,7 +88,7 @@
             // Function to fetch items from the server
             async function fetchProducts(categoryId) {
                 try {
-                    const response = await fetch(`http://localhost:3000/api/products/${categoryId}`);
+                    const response = await fetch(`http://localhost:3000/api/stock/${categoryId}`);
                     if (response.ok) {
                         const products = await response.json();
                         return products;
@@ -109,7 +109,7 @@
              // Function to fetch products from the server
             async function fetchProducts(categoryId) {
                 try {
-                    const response = await fetch(`http://localhost:3000/api/products/${categoryId}`);
+                    const response = await fetch(`http://localhost:3000/api/stock/${categoryId}`);
                     if (response.ok) {
                         const products = await response.json();
                         return products;
@@ -167,6 +167,8 @@
                     </div>
                 `;
             }
+
+        
             
             // Function to display products on the page
             async function displayProducts() {
@@ -178,7 +180,7 @@
                 categoryTitleElement.textContent = categoryName;
 
                 const products = await fetchProducts(categoryId);
-                const productContainer = document.getElementById("product-container");
+                const productContainer = document.getElementById("products-container");
                 productContainer.innerHTML = products.map(createProductCard).join('');
             }
 
