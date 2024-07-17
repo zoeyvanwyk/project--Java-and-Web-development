@@ -56,15 +56,8 @@ app.post('/login', async (req, res) => {
 app.get('/api/category/:id', async (req, res) => {
     const categoryId = req.params.id;
 
-    // to see what the output is while debuggin remove this later
-    // console.log(`Received request for category ID: ${categoryId}`);
-
-  
     try {
         const result = await pool.query('SELECT categoryname FROM Category WHERE CategoryID = $1', [categoryId]);
-    // console log here to see if error is here 
-        // console.log(`Query result: ${JSON.stringify(result.rows)}`);
-
         if (result.rows.length > 0) {
         res.json({ categoryName: result.rows[0].categoryname });
         } else {
@@ -76,6 +69,52 @@ app.get('/api/category/:id', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
     });
+
+
+// // API endpoint to get items by category ID
+// app.get('/api/items/:categoryId', async (req, res) => {
+//     const categoryId = req.params.categoryId;
+  
+//     try {
+//         // Fix this, this is chat helping i dont think thisll pull from the right table
+//       const result = await pool.query('SELECT * FROM Items WHERE categoryid = $1', [categoryId]);
+//       res.json(result.rows);
+//     } catch (err) {
+//       console.error(err);
+//       res.status(500).json({ error: 'Internal Server Error' });
+//     }
+//   });
+  
+//   app.listen(port, () => {
+//     console.log(`Server running on http://localhost:${port}`);
+//   });
+
+
+// // Endpoint to fetch items for a specific category
+// app.get('/api/items/:categoryId', async (req, res) => {
+//     const categoryId = req.params.categoryId;
+//     try {
+//         const query = 'SELECT * FROM stock WHERE categoryid = $1';
+//         const values = [categoryId];
+//         const result = await pool.query(query, values);
+//         res.json(result.rows);
+//     } catch (error) {
+//         console.error('Error fetching items:', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// });
+
+
+app.get('/api/products/:categoryId', async (req, res) => {
+    const { categoryId } = req.params;
+    try {
+        const result = await pool.query('SELECT * FROM stock WHERE categoryid = $1', [categoryId]);
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
 
 
 // Handle sign-up requests

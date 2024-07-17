@@ -11,12 +11,22 @@
 
     </head>
     <body>
-        <h1 id="category-title">Loading...</h1>
-
-
+        <!-- Header section -->
+        <header class="bg-dark py-5">
+            <h1 id="category-title">Loading...</h1>
+        </header>
         
         <!-- The rest of your products page content -->
+        <div class="container mt-5">
+            <div class="row" id="products-container">
+                <!-- Product cards will be dynamically inserted here -->
+            </div>
+        </div>
+
+
+
         <script>
+
             // Function to get query parameters
             function getQueryParams() {
                 const params = {};
@@ -33,10 +43,10 @@
             async function fetchCategoryName(categoryId) {
                 try {
                     const response = await fetch(`http://localhost:3000/api/category/${categoryId}`);
-                    console.log(`Fetching category name for ID: ${categoryId}`);
+                    // console.log(`Fetching category name for ID: ${categoryId}`);
                     if (response.ok) {
                         const data = await response.json();
-                        console.log('Fetched category name:', data.categoryName);
+                        // console.log('Fetched category name:', data.categoryName);
                         return data.categoryName;
                     } else {
                         console.log('Category not found');
@@ -58,6 +68,122 @@
                 const categoryTitleElement = document.getElementById("category-title");
                 categoryTitleElement.textContent = categoryName;
             });
+
+            //  // Function to create an item box
+            //  function createItemBox(item) {
+            //     const itemBox = document.createElement('div');
+            //     itemBox.className = 'item-box';
+            //     itemBox.innerHTML = `
+            //         <h2>${item.name}</h2>
+            //         <p>${item.description}</p>
+            //         <p>Price: $${item.price}</p>
+            //         <p>Stock: ${item.stock}</p>
+            //         <p>Material: ${item.material}</p>
+            //         <p>Colour: ${item.colour}</p>
+            //         <img src="${item.image}" alt="${item.name}">
+            //     `;
+            //     return itemBox;
+            // }
+
+            // Function to fetch items from the server
+            async function fetchProducts(categoryId) {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/products/${categoryId}`);
+                    if (response.ok) {
+                        const products = await response.json();
+                        return products;
+                    } else {
+                        console.error('Failed to fetch products')
+                        // return 'Unknown Category'
+                        // console.error('Error fetching items');
+                        return [];
+                    }
+                } catch (error) {
+                    console.error('Error fetching products:', error);
+                    // return 'Unknown Category';
+                    return [];
+                }
+            }
+
+
+             // Function to fetch products from the server
+            async function fetchProducts(categoryId) {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/products/${categoryId}`);
+                    if (response.ok) {
+                        const products = await response.json();
+                        return products;
+                    } else {
+                        console.error('Failed to fetch products');
+                        return [];
+                    }
+                } catch (error) {
+                    console.error('Error fetching products:', error);
+                    return [];
+                }
+            }
+
+            // // Get the category ID from URL
+            // const queryParams = getQueryParams();
+            // const categoryId = queryParams.category;
+
+            // // Fetch the category name and items, then display them
+            // fetchCategoryName(categoryId).then(categoryName => {
+            //     const categoryTitleElement = document.getElementById("category-title");
+            //     categoryTitleElement.textContent = categoryName;
+
+            //     fetchItems(categoryId).then(items => {
+            //         const itemsContainer = document.getElementById('items-container');
+            //         items.forEach(item => {
+            //             const itemBox = createItemBox(item);
+            //             itemsContainer.appendChild(itemBox);
+            //         });
+            //     });
+            // });
+            
+            // Function to create a product card
+            function createProductCard(product) {
+                return `
+                    <div class="col-md-4 mb-5">
+                        <div class="card h-100">
+                            <!-- Product image -->
+                            <img class="card-img-top" src="${product.image}" alt="${product.name}">
+                            <!-- Product Details -->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name -->
+                                    <h5 class="fw-bolder">${product.name}</h5>
+                                    <!-- Product Price -->
+                                    R${product.price}.00
+                                </div>
+                            </div>
+                            <!-- Product actions -->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center">
+                                    <a class="btn btn-outline-dark mt-auto" href="#">View options</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Function to display products on the page
+            async function displayProducts() {
+                const queryParams = await getQueryParams();
+                const categoryId = queryParams.category;
+                const categoryName = await fetchCategoryName(categoryId);
+
+                const categoryTitleElement = document.getElementById("category-title");
+                categoryTitleElement.textContent = categoryName;
+
+                const products = await fetchProducts(categoryId);
+                const productContainer = document.getElementById("product-container");
+                productContainer.innerHTML = products.map(createProductCard).join('');
+            }
+
+            displayProducts();
+
         </script>
     </body>
     </html>
