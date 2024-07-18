@@ -13,38 +13,34 @@ body {
 #products-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-}
-  
-.item-box {
-    border: 1px solid #ccc;
-    padding: 16px;
-    margin: 16px;
-    width: 200px;
-    text-align: center;
-}
-  
-.item-box img {
-    max-width: 100%;
-    height: auto;
+    gap: 10%;
 }
 
-.product-card {
-    border: 1px solid #ddd;
+
+.card {
+    border: 1px solid #000000;
     padding: 20px;
     width: 300px;
     text-align: center;
 }
 
-.product-card img {
-    width: 100%;
-    height: auto;
-}
 
-.product-card h3 {
+/* .product-card h3 {
     margin: 10px 0;
-}
+} */
 
-.product-card p {
+/* .product-card p {
     margin: 5px 0;
+} */
+
+.card{
+    height: 100%;
+}
+ 
+.images{
+    width: 50%;
+    height: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  
 }
