@@ -90,7 +90,8 @@ app.post('/login', async (req, res) => {
             // Generate a session token
             const sessionToken = generateSessionToken();
             // Set the token as a cookie
-            res.cookie('session_token', sessionToken, { httpOnly: true, secure: false }); // Set secure: true if using HTTPS
+            res.cookie('session_token', sessionToken, { httpOnly: true, secure: false, path: '/', domain: 'localhost' }); // Set secure: true if using HTTPS
+            res.cookie('username', username, { httpOnly: true, secure: false, path: '/', domain: 'localhost' });
             res.status(200).json({ success: true });
         } else {
             res.status(401).json({ error: 'Invalid credentials' });
@@ -147,38 +148,6 @@ app.get('/api/category/:id', async (req, res) => {
     });
 
 
-// // API endpoint to get items by category ID
-// app.get('/api/items/:categoryId', async (req, res) => {
-//     const categoryId = req.params.categoryId;
-  
-//     try {
-//         // Fix this, this is chat helping i dont think thisll pull from the right table
-//       const result = await pool.query('SELECT * FROM Items WHERE categoryid = $1', [categoryId]);
-//       res.json(result.rows);
-//     } catch (err) {
-//       console.error(err);
-//       res.status(500).json({ error: 'Internal Server Error' });
-//     }
-//   });
-  
-//   app.listen(port, () => {
-//     console.log(`Server running on http://localhost:${port}`);
-//   });
-
-
-// // Endpoint to fetch items for a specific category
-// app.get('/api/items/:categoryId', async (req, res) => {
-//     const categoryId = req.params.categoryId;
-//     try {
-//         const query = 'SELECT * FROM stock WHERE categoryid = $1';
-//         const values = [categoryId];
-//         const result = await pool.query(query, values);
-//         res.json(result.rows);
-//     } catch (error) {
-//         console.error('Error fetching items:', error);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// });
 
 
 app.get('/api/stock/:categoryId', async (req, res) => {
@@ -234,6 +203,13 @@ app.get('/signup', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'signup-page.html'));
 });
 
+// app.get('/logout', (req, res) => {
+//     res.clearCookie('session_token');
+//     res.clearCookie('username');
+//     res.redirect('/login');
+// });
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
 });
+

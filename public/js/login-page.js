@@ -19,6 +19,8 @@ loginButton.addEventListener("click", async (e) => {
 
         if (result.success) {
             // alert("You have successfully logged in.");
+            document.cookie = `session_token=${result.sessionToken}; path=/`;
+            document.cookie = `username=${username}; path=/`;
             window.location.href = '/'; // to redirect successful logins back to the main site
         } else {
             loginErrorMsg.style.opacity = 1;
@@ -28,3 +30,21 @@ loginButton.addEventListener("click", async (e) => {
         loginErrorMsg.style.opacity = 1;
     }
 });
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+function checkLoginStatus() {
+    const username = getCookie('username');
+    if (username) {
+        const loginButton = document.getElementById('loggedin');
+        loginButton.value = username;
+        loginButton.disabled = true;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
+
