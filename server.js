@@ -87,12 +87,20 @@ app.post('/login', async (req, res) => {
         const result = await pool.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password]);
 
         if (result.rows.length > 0) {
-            // Generate a session token
+            // //Generate a session token
+            // const sessionToken = generateSessionToken();
+            // //Set the token as a cookie
+            // res.cookie('session_token', sessionToken, { httpOnly: true, secure: false, path: '/', domain: 'localhost' }); // Set secure: true if using HTTPS
+            // res.cookie('username', username, { httpOnly: true, secure: false, path: '/', domain: 'localhost' });
+            // res.status(200).json({ success: true });
+            // // Generate a session token
             const sessionToken = generateSessionToken();
             // Set the token as a cookie
-            res.cookie('session_token', sessionToken, { httpOnly: true, secure: false, path: '/', domain: 'localhost' }); // Set secure: true if using HTTPS
-            res.cookie('username', username, { httpOnly: true, secure: false, path: '/', domain: 'localhost' });
+            res.cookie('session_token', sessionToken, { httpOnly: true, secure: false }); // Set secure: true if using HTTPS
+            // Set the username as a cookie
+            res.cookie('username', username, { httpOnly: false, secure: false }); // Ensure secure: true if using HTTPS
             res.status(200).json({ success: true });
+
         } else {
             res.status(401).json({ error: 'Invalid credentials' });
         }
