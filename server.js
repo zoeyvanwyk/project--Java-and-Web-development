@@ -87,12 +87,16 @@ app.post('/login', async (req, res) => {
         const result = await pool.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password]);
 
         if (result.rows.length > 0) {
-            // // Generate a session token
+            // check if the user is an admin
+            const isAdmin = result.rows[0].is_admin;
+            // Generate a session token
             const sessionToken = generateSessionToken();
             // Set the token as a cookie
             res.cookie('session_token', sessionToken, { httpOnly: true, secure: false }); // Set secure: true if using HTTPS
             // Set the username as a cookie
             res.cookie('username', username, { httpOnly: false, secure: false }); // Ensure secure: true if using HTTPS
+            // set the value of the admin value as an additional cookie to allow cross site access as an admin
+            res.cookie('is_admin', isAdmin, { path: '/', domain: 'localhost' });
             res.status(200).json({ success: true });
 
         } else {
@@ -205,11 +209,6 @@ app.get('/signup', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'signup-page.html'));
 });
 
-// app.get('/logout', (req, res) => {
-//     res.clearCookie('session_token');
-//     res.clearCookie('username');
-//     res.redirect('/login');
-// });
 
 // Add this to your server.js
 app.post('/logout', (req, res) => {
