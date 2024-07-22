@@ -19,6 +19,8 @@ const pool = new Pool({
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// new  thing added
+app.use(express.json());
 
 
 // Function to generate a session token
@@ -95,7 +97,7 @@ app.post('/login', async (req, res) => {
             res.cookie('session_token', sessionToken, { httpOnly: true, secure: false }); // Set secure: true if using HTTPS
             // Set the username as a cookie
             res.cookie('username', username, { httpOnly: false, secure: false }); // Ensure secure: true if using HTTPS
-            // set the value of the admin value as an additional cookie to allow cross site access as an admin
+            // set the value of the admin value as an additional cookie to allow cross site access as an
             res.cookie('is_admin', isAdmin, { path: '/', domain: 'localhost' });
             res.status(200).json({ success: true });
 
@@ -164,6 +166,55 @@ app.get('/api/stock/:categoryId', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
+    }
+});
+
+// API endpoint to fetch all stock items
+app.get('/api/stock', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM stock');
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// API endpoint to add a new stock item
+app.post('/api/stock', async (req, res) => {
+    const { name, price, stock, image } = req.body;
+    try {
+        await pool.query('INSERT INTO stock (name, price, stock, image) VALUES ($1, $2, $3, $4)', [name, price, stock, image]);
+        res.status(201).json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// API endpoint to update an existing stock item
+app.put('/api/stock/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, price, stock, image } = req.body;
+    try {
+        await pool.query('UPDATE stock SET name = $1, price = $2, stock = $3, image = $4 WHERE id = $5', [name, price, stock, image, id]);
+        res.json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+// API endpoint to delete a stock item
+app.delete('/api/stock/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await pool.query('DELETE FROM stock WHERE id = $1', [id]);
+        res.json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
