@@ -150,7 +150,7 @@ app.get('/api/category/:id', async (req, res) => {
         }
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Internal Server Error category not found' });
     }
     });
 
@@ -166,6 +166,20 @@ app.get('/api/stock/:categoryId', async (req, res) => {
     }
 });
 
+//trying to see if adding an endpoint for fetching an item by ID will help:
+app.get('/api/stock/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query('SELECT * FROM stock WHERE item_id = $1', [id]);
+        res.json(result.rows[0]); // Return a single item, not an array
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+
 // API endpoint to fetch all stock items
 app.get('/api/stock', async (req, res) => {
     try {
@@ -173,23 +187,76 @@ app.get('/api/stock', async (req, res) => {
         res.json(result.rows);
     } catch (err) {
         console.error(err,);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Internal Server Error from getting stock' });
     }
 });
+
+// // API endpoint to fetch a specific stock item by ID
+// app.get('/api/stock/:id', async (req, res) => {
+//     const { id } = req.params;
+//     try {
+//         const result = await pool.query('SELECT * FROM stock WHERE item_id = $1', [id]);
+//         res.json(result.rows[0]); // Return a single item, not an array
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: 'Internal Server Error 0' });
+//     }
+// });
+
 
 // API endpoint to add a new stock item
+// app.post('/api/stock', async (req, res) => {
+//     const { name, categoryid, description, price, stock, material, colour, image } = req.body;
+//     console.log('Received payload for POST /api/stock:', req.body); // Add this line
+//     try {
+//         await pool.query('INSERT INTO stock (name, categoryid, description, price, stock, material, colour, image) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [name, categoryid, description, price, stock, material, colour, image]);
+//         console.log('Executing query:', queryText);
+//         console.log('With values:', queryValues);
+        
+//         await pool.query(queryText, queryValues);
+//         res.status(201).json({ success: true });
+        
+//     } catch (err) {
+//         // console.error(err);
+//         console.error('Error in POST /api/stock:', err);
+//         res.status(500).json({ error: 'Internal Server Error during item addition' });
+//     }
+// });
+// app.post('/api/stock', async (req, res) => {
+//     const data = req.body;
+
+//     try {
+//         const result = await db.query(
+//             'INSERT INTO stock (name, categoryid, description, price, stock, material, colour, image) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+//             [data.name, data.categoryid, data.description, data.price, data.stock, data.material, data.colour, data.image]
+//         );
+//         res.status(201).json({ success: true, data: result });
+//     } catch (error) {
+//         console.error('Error adding item:', error); // Log error details
+//         res.status(500).json({ success: false, error: error.message });
+//     }
+// });
 app.post('/api/stock', async (req, res) => {
     const { name, categoryid, description, price, stock, material, colour, image } = req.body;
+
     try {
-        await pool.query('INSERT INTO stock (name, categoryid, description, price, stock, material, colour, image) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [name, categoryid, description, price, stock, material, colour, image]);
-        res.status(201).json({ success: true });
-    } catch (err) {
-        console.error(err);
+        const result = await pool.query(
+            'INSERT INTO stock (name, categoryid, description, price, stock, material, colour, image) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+            [name, categoryid, description, price, stock, material, colour, image]
+        );
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error('Error adding item:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
-// API endpoint to update an existing stock item
+
+
+
+
+
+//API endpoint to update an existing stock item
 app.put('/api/stock/:id', async (req, res) => {
     const { id } = req.params;
     const { name, categoryid, description, price, stock, material, colour, image } = req.body;
@@ -198,9 +265,30 @@ app.put('/api/stock/:id', async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error('Error in PUT /api/stock/:id:', err);
+        res.status(500).json({ error: 'Internal Server Error during item update' });
     }
 });
+//Update an existing stock item
+// app.put('/api/stock/:id', async (req, res) => {
+//     const itemId = req.params.id;
+//     const { name, categoryid, description, price, stock, material, colour, image } = req.body;
+
+//     try {
+//         const query = `
+//             UPDATE stock
+//             SET name = $1, categoryid = $2, description = $3, price = $4, stock = $5, material = $6, colour = $7, image = $8
+//             WHERE item_id = $9
+//         `;
+//         const values = [name, categoryid, description, price, stock, material, colour, image, itemId];
+
+//         await pool.query(query, values);
+//         res.status(200).json({ message: 'Item updated successfully' });
+//     } catch (error) {
+//         console.error('Error updating item:', error);
+//         res.status(500).json({ error: 'Internal Server Error during item update' });
+//     }
+// });
 
 
 // API endpoint to delete a stock item
@@ -211,7 +299,7 @@ app.delete('/api/stock/:id', async (req, res) => {
         res.json({ success: true });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Internal Server Error during item deletion' });
     }
 });
 
