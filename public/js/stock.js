@@ -1,11 +1,11 @@
-document.addEventListener('DOMContentLoaded', () => {
-    loadStockItems();
+// document.addEventListener('DOMContentLoaded', () => {
+//     loadStockItems();
 
-    document.getElementById('add-item-button').addEventListener('click', () => {
-        // Show a form to add a new item
-        showAddItemForm();
-    });
-});
+//     document.getElementById('add-item-button').addEventListener('click', () => {
+//         // Show a form to add a new item
+//         showAddItemForm();
+//     });
+// });
 
 // async function loadStockItems() {
 //     try {
@@ -265,23 +265,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('stock-form').addEventListener('submit', async (event) => {
         event.preventDefault();
+        console.log('Form submitted');
+
         const itemId = document.getElementById('item-id').value;
         const data = {
+
+            // name: document.getElementById('name').value,
+            // categoryid: document.getElementById('categoryid').value,
+            // description: document.getElementById('description').value,
+            // price: document.getElementById('price').value,
+            // stock: document.getElementById('stock').value,
+            // material: document.getElementById('material').value,
+            // colour: document.getElementById('colour').value,
+            // image: document.getElementById('image').value
             name: document.getElementById('name').value,
-            categoryid: document.getElementById('categoryid').value,
+            categoryid: Number(document.getElementById('categoryid').value), // Ensure this is a number
             description: document.getElementById('description').value,
-            price: document.getElementById('price').value,
-            stock: document.getElementById('stock').value,
+            price: Number(document.getElementById('price').value), // Ensure this is a number
+            stock: Number(document.getElementById('stock').value), // Ensure this is a number
             material: document.getElementById('material').value,
             colour: document.getElementById('colour').value,
             image: document.getElementById('image').value
         };
 
+        console.log('Form data:', data);
+
         if (itemId) {
             // Edit item
+            console.log('Editing item:', itemId);
             await editItem(itemId, data);
         } else {
             // Add item
+            console.log('Adding new item');
             await addItem(data);
         }
     });
@@ -356,6 +371,7 @@ async function editItem(id, data) {
             body: JSON.stringify(data)
         });
         if (response.ok) {
+            console.log('Item updated successfully');
             loadStockItems();
             const editItemModal = bootstrap.Modal.getInstance(document.getElementById('editItemModal'));
             editItemModal.hide();
@@ -371,6 +387,7 @@ async function deleteItem(id) {
     try {
         const response = await fetch(`/api/stock/${id}`, { method: 'DELETE' });
         if (response.ok) {
+            console.log('Item deleted successfully');
             loadStockItems();
         } else {
             console.error('Failed to delete item');
@@ -390,6 +407,7 @@ async function addItem(data) {
             body: JSON.stringify(data)
         });
         if (response.ok) {
+            console.log('Item added successfully');
             loadStockItems();
             const editItemModal = bootstrap.Modal.getInstance(document.getElementById('editItemModal'));
             editItemModal.hide();
