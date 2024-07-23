@@ -136,7 +136,6 @@ app.post('/sign-up', async (req, res) => {
 });
 
 
-
 // API endpoint to get category name by ID
 app.get('/api/category/:id', async (req, res) => {
     const categoryId = req.params.id;
@@ -154,8 +153,6 @@ app.get('/api/category/:id', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
     });
-
-
 
 
 app.get('/api/stock/:categoryId', async (req, res) => {
@@ -182,9 +179,9 @@ app.get('/api/stock', async (req, res) => {
 
 // API endpoint to add a new stock item
 app.post('/api/stock', async (req, res) => {
-    const { name, price, stock, image } = req.body;
+    const { name, categoryid, description, price, stock, material, colour, image } = req.body;
     try {
-        await pool.query('INSERT INTO stock (name, price, stock, image) VALUES ($1, $2, $3, $4)', [name, price, stock, image]);
+        await pool.query('INSERT INTO stock (name, categoryid, description, price, stock, material, colour, image) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)', [name, categoryid, description, price, stock, material, colour, image]);
         res.status(201).json({ success: true });
     } catch (err) {
         console.error(err);
@@ -195,9 +192,9 @@ app.post('/api/stock', async (req, res) => {
 // API endpoint to update an existing stock item
 app.put('/api/stock/:id', async (req, res) => {
     const { id } = req.params;
-    const { name, price, stock, image } = req.body;
+    const { name, categoryid, description, price, stock, material, colour, image } = req.body;
     try {
-        await pool.query('UPDATE stock SET name = $1, price = $2, stock = $3, image = $4 WHERE id = $5', [name, price, stock, image, id]);
+        await pool.query('UPDATE stock SET name = $1, categoryid = $2, description = $3, price = $4, stock = $5, material = $6, colour = $7, image = $8 WHERE item_id = $9', [name, categoryid, description, price, stock, material, colour, image, id]);
         res.json({ success: true });
     } catch (err) {
         console.error(err);
