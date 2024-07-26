@@ -84,7 +84,7 @@ h4{
     border-top: 3px solid black;
 }
 
-h1 {
+.categories h1 {
     /*padding-bottom: 25px;*/
     background-color: #B8B2A6;
     border-radius: 25px;
@@ -129,4 +129,25 @@ a{
 .bottom-cards{
     border-radius: 10%;
     box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5); 
+}
+
+
+/* come back to this section to get the table looking better */
+
+.tables{
+    background-color: #DBE9B7;
+    border: 2px solid black;
+    width: 100%;
+    border-collapse: collapse;
+    padding: .5rem .5rem;
+    border-bottom-width: var;
+    border-style: solid;
+}
+
+.stock{
+    padding-top: 10%;
+}
+
+#stock-items{
+    border: 2px solid black;
 }
