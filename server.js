@@ -197,6 +197,11 @@ app.post('/api/stock', async (req, res) => {
 app.put('/api/stock/:id', async (req, res) => {
     const { id } = req.params;
     const { name, categoryid, description, price, stock, material, colour, image } = req.body;
+
+    if (!name || !categoryid || !price || !stock) {
+        return res.status(400).send('Invalid input data');
+    }
+    
     try {
         const result = await pool.query(
             'UPDATE stock SET name = $1, categoryid = $2, description = $3, price = $4, stock = $5, material = $6, colour = $7, image = $8 WHERE item_id = $9 RETURNING *',

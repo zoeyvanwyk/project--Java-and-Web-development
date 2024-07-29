@@ -5,87 +5,87 @@ document.addEventListener('DOMContentLoaded', () => {
         showAddItemForm();
     });
 
-    // document.getElementById('stock-form').addEventListener('submit', async (event) => {
-    //     event.preventDefault();
-    //     console.log('Form submitted');
-
-    //     const itemId = document.getElementById('item-id').value;
-    //     const data = {
-    //         name: document.getElementById('name').value,
-    //         categoryid: Number(document.getElementById('categoryid').value), // Ensure this is a number
-    //         description: document.getElementById('description').value,
-    //         price: Number(document.getElementById('price').value), // Ensure this is a number
-    //         stock: Number(document.getElementById('stock').value), // Ensure this is a number
-    //         material: document.getElementById('material').value,
-    //         colour: document.getElementById('colour').value,
-    //         image: document.getElementById('image').value
-    //     };
-
-    //     console.log('Form data:', data);
-    //     console.log('Item ID:', itemId);
-
-    //     if (itemId) {
-    //         // Edit item
-    //         console.log('Editing item:', itemId);
-    //         await editItem(itemId, data);
-    //     } else {
-    //         // Add item
-    //         console.log('Adding new item');
-    //         await addItem(data);
-    //     }
-    // });
-    document.getElementById('stock-form').addEventListener('submit', async function (event) {
+    document.getElementById('stock-form').addEventListener('submit', async (event) => {
         event.preventDefault();
-    
+        console.log('Form submitted');
+
         const itemId = document.getElementById('item-id').value;
-        const name = document.getElementById('name').value;
-        const categoryid = document.getElementById('categoryid').value;
-        const description = document.getElementById('description').value;
-        const price = document.getElementById('price').value;
-        const stock = document.getElementById('stock').value;
-        const material = document.getElementById('material').value;
-        const colour = document.getElementById('colour').value;
-        const image = document.getElementById('image').value;
-    
-        // Validate inputs before sending the request
-        if (!itemId || !name || !categoryid || !price || !stock) {
-            alert('Please fill in all required fields');
-            return;
-        }
-    
-        const itemData = {
-            name,
-            categoryid: parseInt(categoryid, 10),
-            description,
-            price: parseFloat(price),
-            stock: parseInt(stock, 10),
-            material,
-            colour,
-            image
+        const data = {
+            name: document.getElementById('name').value,
+            categoryid: Number(document.getElementById('categoryid').value), // Ensure this is a number
+            description: document.getElementById('description').value,
+            price: Number(document.getElementById('price').value), // Ensure this is a number
+            stock: Number(document.getElementById('stock').value), // Ensure this is a number
+            material: document.getElementById('material').value,
+            colour: document.getElementById('colour').value,
+            image: document.getElementById('image').value
         };
-    
-        try {
-            const response = await fetch(`/api/stock/${itemId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(itemData)
-            });
-    
-            if (!response.ok) {
-                throw new Error('Failed to update item');
-            }
-    
-            // Handle success
-            alert('Item updated successfully');
-            const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
-            editItemModal.hide();
-            // Refresh the items list or update the UI as needed
-        } catch (error) {
-            console.error('Error editing item:', error);
+
+        console.log('Form data:', data);
+        console.log('Item ID:', itemId);
+
+        if (itemId) {
+            // Edit item
+            console.log('Editing item:', itemId);
+            await editItem(itemId, data);
+        } else {
+            // Add item
+            console.log('Adding new item');
+            await addItem(data);
         }
     });
+    // document.getElementById('stock-form').addEventListener('submit', async function (event) {
+    //     event.preventDefault();
+    
+    //     const itemId = document.getElementById('item-id').value;
+    //     const name = document.getElementById('name').value;
+    //     const categoryid = document.getElementById('categoryid').value;
+    //     const description = document.getElementById('description').value;
+    //     const price = document.getElementById('price').value;
+    //     const stock = document.getElementById('stock').value;
+    //     const material = document.getElementById('material').value;
+    //     const colour = document.getElementById('colour').value;
+    //     const image = document.getElementById('image').value;
+    
+    //     // Validate inputs before sending the request
+    //     if (!itemId || !name || !categoryid || !price || !stock) {
+    //         alert('Please fill in all required fields');
+    //         return;
+    //     }
+    
+    //     const itemData = {
+    //         name,
+    //         categoryid: parseInt(categoryid, 10),
+    //         description,
+    //         price: parseFloat(price),
+    //         stock: parseInt(stock, 10),
+    //         material,
+    //         colour,
+    //         image
+    //     };
+    
+    //     try {
+    //         const response = await fetch(`/api/stock/${itemId}`, {
+    //             method: 'PUT',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify(itemData)
+    //         });
+    
+    //         if (!response.ok) {
+    //             throw new Error('Failed to update item');
+    //         }
+    
+    //         // Handle success
+    //         alert('Item updated successfully');
+    //         const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
+    //         editItemModal.hide();
+    //         // Refresh the items list or update the UI as needed
+    //     } catch (error) {
+    //         console.error('Error editing item:', error);
+    //     }
+    // });
     
 });
 
