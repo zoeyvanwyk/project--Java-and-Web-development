@@ -26,7 +26,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Function to generate a session token
 const generateSessionToken = () => {
-    return crypto.randomBytes(64).toString('hex');
+    // return crypto.randomBytes(64).toString('hex');
+    return crypto.randomBytes(16).toString('hex');
 };
 
 
@@ -150,9 +151,12 @@ app.get('/api/stock/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const result = await pool.query('SELECT * FROM stock WHERE item_id = $1', [id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Item not found' });
+        }
         res.json(result.rows[0]); // Return a single item, not an array
-    } catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error('Error fetching stock item:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
@@ -193,9 +197,15 @@ app.put('/api/stock/:id', async (req, res) => {
     const { id } = req.params;
     const { name, categoryid, description, price, stock, material, colour, image } = req.body;
     try {
-        await pool.query('UPDATE stock SET name = $1, categoryid = $2, description = $3, price = $4, stock = $5, material = $6, colour = $7, image = $8 WHERE item_id = $9', [name, categoryid, description, price, stock, material, colour, image, id]);
-        res.json({ success: true });
-    } catch (err) {
+        const result = await pool.query(
+            'UPDATE stock SET name = $1, categoryid = $2, description = $3, price = $4, stock = $5, material = $6, colour = $7, image = $8 WHERE item_id = $9 RETURNING *',
+            [name, categoryid, description, price, stock, material, colour, image, id]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Item not found' });
+        }
+        res.json(result.rows[0]);
+    } catch (error) {
         console.error(err);
         console.error('Error in PUT /api/stock/:id:', err);
         res.status(500).json({ error: 'Internal Server Error during item update' });
@@ -207,10 +217,17 @@ app.put('/api/stock/:id', async (req, res) => {
 app.delete('/api/stock/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        await pool.query('DELETE FROM stock WHERE id = $1', [id]);
-        res.json({ success: true });
+        // const itemId = req.params.id; // Correctly define itemId
+        // await pool.query('DELETE FROM stock WHERE item_id = $1', [itemID]);
+        // res.json({ success: true });
+        const result = await pool.query('DELETE FROM stock WHERE item_id = $1 RETURNING *', [id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Item not found' });
+        }
+        res.json(result.rows[0]);
     } catch (err) {
         console.error(err);
+        console.error('Error deleting item:', error);
         res.status(500).json({ error: 'Internal Server Error during item deletion' });
     }
 });

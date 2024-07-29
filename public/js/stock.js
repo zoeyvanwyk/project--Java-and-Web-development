@@ -66,62 +66,55 @@ function displayItems(items) {
     });
 
     // Attach event listeners to the edit and delete buttons
+    // document.querySelectorAll('.edit-button').forEach(button => {
+    //     button.addEventListener('click', async (event) => {
+    //         const itemId = event.target.dataset.id;
+    //         console.log('Edit button clicked for item ID:', itemId);
+
+    //         const response = await fetch(`/api/stock/${itemId}`);
+    //         const item = await response.json();
+
+    //         console.log('Editing item data:', item);
+
+    //         document.getElementById('item-id').value = item.item_id || '';
+    //         document.getElementById('name').value = item.name || '';
+    //         document.getElementById('categoryid').value = item.categoryid || '';
+    //         document.getElementById('description').value = item.description || '';
+    //         document.getElementById('price').value = item.price || '';
+    //         document.getElementById('stock').value = item.stock || '';
+    //         document.getElementById('material').value = item.material || '';
+    //         document.getElementById('colour').value = item.colour || '';
+    //         document.getElementById('image').value = item.image || '';
+
+    //         const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
+    //         editItemModal.show();
+    //     });
+    // });
+
+    // document.querySelectorAll('.delete-button').forEach(button => {
+    //     button.addEventListener('click', async (event) => {
+    //         const itemId = event.target.dataset.id;
+    //         await deleteItem(itemId);
+    //     });
+    // });
     document.querySelectorAll('.edit-button').forEach(button => {
-        button.addEventListener('click', async (event) => {
-            const itemId = event.target.dataset.id;
-            console.log('Edit button clicked for item ID:', itemId);
-
-            const response = await fetch(`/api/stock/${itemId}`);
-            const item = await response.json();
-
-            console.log('Editing item data:', item);
-
-            document.getElementById('item-id').value = item.item_id || '';
-            document.getElementById('name').value = item.name || '';
-            document.getElementById('categoryid').value = item.categoryid || '';
-            document.getElementById('description').value = item.description || '';
-            document.getElementById('price').value = item.price || '';
-            document.getElementById('stock').value = item.stock || '';
-            document.getElementById('material').value = item.material || '';
-            document.getElementById('colour').value = item.colour || '';
-            document.getElementById('image').value = item.image || '';
-
-            const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
-            editItemModal.show();
+        button.addEventListener('click', event => {
+            const itemId = event.target.getAttribute('data-id');
+            const item = items.find(i => i.item_id === itemId);
+            showEditItemForm(item);
         });
     });
 
     document.querySelectorAll('.delete-button').forEach(button => {
-        button.addEventListener('click', async (event) => {
-            const itemId = event.target.dataset.id;
-            await deleteItem(itemId);
+        button.addEventListener('click', event => {
+            const itemId = event.target.getAttribute('data-id');
+            deleteItem(itemId);
         });
     });
 }
 
-// async function editItem(id, data) {
-//     try {
-//         console.log('Sending PUT request for item ID:', id);
-//         const response = await fetch(`/api/stock/${id}`, {
-//             method: 'PUT',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(data)
-//         });
-//         if (response.ok) {
-//             console.log('Item updated successfully');
-//             loadStockItems();
-//             const editItemModal = bootstrap.Modal.getInstance(document.getElementById('editItemModal'));
-//             editItemModal.hide();
-//         } else {
-//             console.error('Failed to update item');
-//         }
-//     } catch (error) {
-//         console.error('Error updating item:', error);
-//     }
-// }
-// async function updateItem(itemId, data) {
+
+// async function editItem(itemId, data) {
 //     try {
 //         const response = await fetch(`/api/stock/${itemId}`, {
 //             method: 'PUT',
@@ -135,53 +128,33 @@ function displayItems(items) {
 //             throw new Error(`HTTP error! status: ${response.status}`);
 //         }
 
-//         const result = await response.json();
-//         console.log('Item updated successfully:', result);
+//         console.log('Item updated successfully');
+//         loadStockItems();
+//         const editItemModal = bootstrap.Modal.getInstance(document.getElementById('editItemModal'));
+//         editItemModal.hide();
 //     } catch (error) {
-//         console.error('Failed to update item:', error);
+//         console.error('Error updating item:', error);
 //     }
 // }
-async function editItem(itemId, data) {
-    try {
-        const response = await fetch(`/api/stock/${itemId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        console.log('Item updated successfully');
-        loadStockItems();
-        const editItemModal = bootstrap.Modal.getInstance(document.getElementById('editItemModal'));
-        editItemModal.hide();
-    } catch (error) {
-        console.error('Error updating item:', error);
-    }
-}
 
 
-async function deleteItem(id) {
-    try {
-        const response = await fetch(`/api/stock/${id}`, { method: 'DELETE' });
-        if (response.ok) {
-            console.log('Item deleted successfully');
-            loadStockItems();
-        } else {
-            console.error('Failed to delete item');
-        }
-    } catch (error) {
-        console.error('Error deleting item:', error);
-    }
-}
+// async function deleteItem(id) {
+//     try {
+//         const response = await fetch(`/api/stock/${id}`, { method: 'DELETE' });
+//         if (response.ok) {
+//             console.log('Item deleted successfully');
+//             loadStockItems();
+//         } else {
+//             console.error('Failed to delete item');
+//         }
+//     } catch (error) {
+//         console.error('Error deleting item:', error);
+//     }
+// }
+
 
 // async function addItem(data) {
 //     try {
-//         console.log('Sending POST request');
 //         const response = await fetch('/api/stock', {
 //             method: 'POST',
 //             headers: {
@@ -190,23 +163,66 @@ async function deleteItem(id) {
 //             body: JSON.stringify(data)
 //         });
 
-//         console.log('Response status:', response.status);  // Log the response status
-
-//         if (response.ok) {
-//             console.log('Item added successfully');
-//             loadStockItems();
-//             const editItemModal = bootstrap.Modal.getInstance(document.getElementById('editItemModal'));
-//             editItemModal.hide();
-//         } else {
-//             console.error('Failed to add item');
-//             const errorText = await response.text();  // Get error response text
-//             console.error('Response text:', errorText);  // Log error response text
+//         if (!response.ok) {
+//             throw new Error(`HTTP error! status: ${response.status}`);
 //         }
+
+//         console.log('Item added successfully');
+//         loadStockItems();
+//         const editItemModal = bootstrap.Modal.getInstance(document.getElementById('editItemModal'));
+//         editItemModal.hide();
 //     } catch (error) {
 //         console.error('Error adding item:', error);
-        
 //     }
 // }
+
+// function showAddItemForm() {
+//     document.getElementById('item-id').value = '';
+//     document.getElementById('name').value = '';
+//     document.getElementById('categoryid').value = '';
+//     document.getElementById('description').value = '';
+//     document.getElementById('price').value = '';
+//     document.getElementById('stock').value = '';
+//     document.getElementById('material').value = '';
+//     document.getElementById('colour').value = '';
+//     document.getElementById('image').value = '';
+
+//     const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
+//     editItemModal.show();
+// }
+
+function showAddItemForm() {
+    resetForm();
+    const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
+    editItemModal.show();
+}
+
+function showEditItemForm(item) {
+    if (!item) {
+        console.error('Item not found');
+        return;
+    }
+
+    resetForm();
+    document.getElementById('item-id').value = item.item_id;
+    document.getElementById('name').value = item.name;
+    document.getElementById('categoryid').value = item.categoryid;
+    document.getElementById('description').value = item.description;
+    document.getElementById('price').value = item.price;
+    document.getElementById('stock').value = item.stock;
+    document.getElementById('material').value = item.material;
+    document.getElementById('colour').value = item.colour;
+    document.getElementById('image').value = item.image;
+    
+    const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
+    editItemModal.show();
+}
+
+function resetForm() {
+    document.getElementById('item-id').value = '';
+    document.getElementById('stock-form').reset();
+}
+
 async function addItem(data) {
     try {
         const response = await fetch('/api/stock', {
@@ -216,12 +232,8 @@ async function addItem(data) {
             },
             body: JSON.stringify(data)
         });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        console.log('Item added successfully');
+        const newItem = await response.json();
+        console.log('New item added:', newItem);
         loadStockItems();
         const editItemModal = bootstrap.Modal.getInstance(document.getElementById('editItemModal'));
         editItemModal.hide();
@@ -230,18 +242,33 @@ async function addItem(data) {
     }
 }
 
-function showAddItemForm() {
-    document.getElementById('item-id').value = '';
-    document.getElementById('name').value = '';
-    document.getElementById('categoryid').value = '';
-    document.getElementById('description').value = '';
-    document.getElementById('price').value = '';
-    document.getElementById('stock').value = '';
-    document.getElementById('material').value = '';
-    document.getElementById('colour').value = '';
-    document.getElementById('image').value = '';
-
-    const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
-    editItemModal.show();
+async function editItem(itemId, data) {
+    try {
+        const response = await fetch(`/api/stock/${itemId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        const updatedItem = await response.json();
+        console.log('Item updated:', updatedItem);
+        loadStockItems();
+        const editItemModal = bootstrap.Modal.getInstance(document.getElementById('editItemModal'));
+        editItemModal.hide();
+    } catch (error) {
+        console.error('Error editing item:', error);
+    }
 }
 
+async function deleteItem(itemId) {
+    try {
+        await fetch(`/api/stock/${itemId}`, {
+            method: 'DELETE'
+        });
+        console.log('Item deleted:', itemId);
+        loadStockItems();
+    } catch (error) {
+        console.error('Error deleting item:', error);
+    }
+}
