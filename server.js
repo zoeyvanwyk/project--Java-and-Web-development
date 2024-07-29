@@ -148,7 +148,8 @@ app.get('/api/stock/:categoryId', async (req, res) => {
 
 //API endpoint to fetch a specific stock item by ID
 app.get('/api/stock/:id', async (req, res) => {
-    const { id } = req.params;
+    const itemId = parseInt(req.params.id, 10);
+    // const { id } = req.params;
     try {
         const result = await pool.query('SELECT * FROM stock WHERE item_id = $1', [id]);
         if (result.rows.length === 0) {
@@ -206,8 +207,8 @@ app.put('/api/stock/:id', async (req, res) => {
         }
         res.json(result.rows[0]);
     } catch (error) {
-        console.error(err);
-        console.error('Error in PUT /api/stock/:id:', err);
+        console.error(error);
+        console.error('Error in PUT /api/stock/:id:', error);
         res.status(500).json({ error: 'Internal Server Error during item update' });
     }
 });

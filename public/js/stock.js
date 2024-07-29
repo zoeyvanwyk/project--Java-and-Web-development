@@ -5,35 +5,88 @@ document.addEventListener('DOMContentLoaded', () => {
         showAddItemForm();
     });
 
-    document.getElementById('stock-form').addEventListener('submit', async (event) => {
+    // document.getElementById('stock-form').addEventListener('submit', async (event) => {
+    //     event.preventDefault();
+    //     console.log('Form submitted');
+
+    //     const itemId = document.getElementById('item-id').value;
+    //     const data = {
+    //         name: document.getElementById('name').value,
+    //         categoryid: Number(document.getElementById('categoryid').value), // Ensure this is a number
+    //         description: document.getElementById('description').value,
+    //         price: Number(document.getElementById('price').value), // Ensure this is a number
+    //         stock: Number(document.getElementById('stock').value), // Ensure this is a number
+    //         material: document.getElementById('material').value,
+    //         colour: document.getElementById('colour').value,
+    //         image: document.getElementById('image').value
+    //     };
+
+    //     console.log('Form data:', data);
+    //     console.log('Item ID:', itemId);
+
+    //     if (itemId) {
+    //         // Edit item
+    //         console.log('Editing item:', itemId);
+    //         await editItem(itemId, data);
+    //     } else {
+    //         // Add item
+    //         console.log('Adding new item');
+    //         await addItem(data);
+    //     }
+    // });
+    document.getElementById('stock-form').addEventListener('submit', async function (event) {
         event.preventDefault();
-        console.log('Form submitted');
-
+    
         const itemId = document.getElementById('item-id').value;
-        const data = {
-            name: document.getElementById('name').value,
-            categoryid: Number(document.getElementById('categoryid').value), // Ensure this is a number
-            description: document.getElementById('description').value,
-            price: Number(document.getElementById('price').value), // Ensure this is a number
-            stock: Number(document.getElementById('stock').value), // Ensure this is a number
-            material: document.getElementById('material').value,
-            colour: document.getElementById('colour').value,
-            image: document.getElementById('image').value
+        const name = document.getElementById('name').value;
+        const categoryid = document.getElementById('categoryid').value;
+        const description = document.getElementById('description').value;
+        const price = document.getElementById('price').value;
+        const stock = document.getElementById('stock').value;
+        const material = document.getElementById('material').value;
+        const colour = document.getElementById('colour').value;
+        const image = document.getElementById('image').value;
+    
+        // Validate inputs before sending the request
+        if (!itemId || !name || !categoryid || !price || !stock) {
+            alert('Please fill in all required fields');
+            return;
+        }
+    
+        const itemData = {
+            name,
+            categoryid: parseInt(categoryid, 10),
+            description,
+            price: parseFloat(price),
+            stock: parseInt(stock, 10),
+            material,
+            colour,
+            image
         };
-
-        console.log('Form data:', data);
-        console.log('Item ID:', itemId);
-
-        if (itemId) {
-            // Edit item
-            console.log('Editing item:', itemId);
-            await editItem(itemId, data);
-        } else {
-            // Add item
-            console.log('Adding new item');
-            await addItem(data);
+    
+        try {
+            const response = await fetch(`/api/stock/${itemId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(itemData)
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to update item');
+            }
+    
+            // Handle success
+            alert('Item updated successfully');
+            const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
+            editItemModal.hide();
+            // Refresh the items list or update the UI as needed
+        } catch (error) {
+            console.error('Error editing item:', error);
         }
     });
+    
 });
 
 async function loadStockItems() {
@@ -66,42 +119,12 @@ function displayItems(items) {
     });
 
     // Attach event listeners to the edit and delete buttons
-    // document.querySelectorAll('.edit-button').forEach(button => {
-    //     button.addEventListener('click', async (event) => {
-    //         const itemId = event.target.dataset.id;
-    //         console.log('Edit button clicked for item ID:', itemId);
-
-    //         const response = await fetch(`/api/stock/${itemId}`);
-    //         const item = await response.json();
-
-    //         console.log('Editing item data:', item);
-
-    //         document.getElementById('item-id').value = item.item_id || '';
-    //         document.getElementById('name').value = item.name || '';
-    //         document.getElementById('categoryid').value = item.categoryid || '';
-    //         document.getElementById('description').value = item.description || '';
-    //         document.getElementById('price').value = item.price || '';
-    //         document.getElementById('stock').value = item.stock || '';
-    //         document.getElementById('material').value = item.material || '';
-    //         document.getElementById('colour').value = item.colour || '';
-    //         document.getElementById('image').value = item.image || '';
-
-    //         const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
-    //         editItemModal.show();
-    //     });
-    // });
-
-    // document.querySelectorAll('.delete-button').forEach(button => {
-    //     button.addEventListener('click', async (event) => {
-    //         const itemId = event.target.dataset.id;
-    //         await deleteItem(itemId);
-    //     });
-    // });
     document.querySelectorAll('.edit-button').forEach(button => {
         button.addEventListener('click', event => {
             const itemId = event.target.getAttribute('data-id');
-            const item = items.find(i => i.item_id === itemId);
-            showEditItemForm(item);
+            // const item = items.find(i => i.item_id === itemId);
+            // const itemId = event.target.getAttribute('data-id');
+            showEditItemForm(itemId);
         });
     });
 
@@ -138,90 +161,6 @@ function displayItems(items) {
 // }
 
 
-// async function deleteItem(id) {
-//     try {
-//         const response = await fetch(`/api/stock/${id}`, { method: 'DELETE' });
-//         if (response.ok) {
-//             console.log('Item deleted successfully');
-//             loadStockItems();
-//         } else {
-//             console.error('Failed to delete item');
-//         }
-//     } catch (error) {
-//         console.error('Error deleting item:', error);
-//     }
-// }
-
-
-// async function addItem(data) {
-//     try {
-//         const response = await fetch('/api/stock', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(data)
-//         });
-
-//         if (!response.ok) {
-//             throw new Error(`HTTP error! status: ${response.status}`);
-//         }
-
-//         console.log('Item added successfully');
-//         loadStockItems();
-//         const editItemModal = bootstrap.Modal.getInstance(document.getElementById('editItemModal'));
-//         editItemModal.hide();
-//     } catch (error) {
-//         console.error('Error adding item:', error);
-//     }
-// }
-
-// function showAddItemForm() {
-//     document.getElementById('item-id').value = '';
-//     document.getElementById('name').value = '';
-//     document.getElementById('categoryid').value = '';
-//     document.getElementById('description').value = '';
-//     document.getElementById('price').value = '';
-//     document.getElementById('stock').value = '';
-//     document.getElementById('material').value = '';
-//     document.getElementById('colour').value = '';
-//     document.getElementById('image').value = '';
-
-//     const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
-//     editItemModal.show();
-// }
-
-function showAddItemForm() {
-    resetForm();
-    const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
-    editItemModal.show();
-}
-
-function showEditItemForm(item) {
-    if (!item) {
-        console.error('Item not found');
-        return;
-    }
-
-    resetForm();
-    document.getElementById('item-id').value = item.item_id;
-    document.getElementById('name').value = item.name;
-    document.getElementById('categoryid').value = item.categoryid;
-    document.getElementById('description').value = item.description;
-    document.getElementById('price').value = item.price;
-    document.getElementById('stock').value = item.stock;
-    document.getElementById('material').value = item.material;
-    document.getElementById('colour').value = item.colour;
-    document.getElementById('image').value = item.image;
-    
-    const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
-    editItemModal.show();
-}
-
-function resetForm() {
-    document.getElementById('item-id').value = '';
-    document.getElementById('stock-form').reset();
-}
 
 async function addItem(data) {
     try {
@@ -272,3 +211,96 @@ async function deleteItem(itemId) {
         console.error('Error deleting item:', error);
     }
 }
+
+function showAddItemForm() {
+    resetForm();
+    const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
+    editItemModal.show();
+}
+
+async function showEditItemForm(itemId) {
+    try {
+        // const response = await fetch(`http://localhost:3000/api/stock/${itemId}`);
+        const response = await fetch(`/api/stock/${itemId}`);
+        if (!response.ok) {
+            throw new Error('Item not found');
+        }
+        const item = await response.json();
+
+        // Populate the form with item data
+        // document.getElementById('item-id').value = item.item_id;
+        // document.getElementById('name').value = item.name;
+        // document.getElementById('categoryid').value = item.categoryid;
+        // document.getElementById('description').value = item.description;
+        // document.getElementById('price').value = item.price;
+        // document.getElementById('stock').value = item.stock;
+        // document.getElementById('material').value = item.material;
+        // document.getElementById('colour').value = item.colour;
+        // document.getElementById('image').value = item.image;
+        document.getElementById('item-id').value = item.item_id || '';
+        document.getElementById('name').value = item.name || '';
+        document.getElementById('categoryid').value = item.categoryid || '';
+        document.getElementById('description').value = item.description || '';
+        document.getElementById('price').value = item.price || '';
+        document.getElementById('stock').value = item.stock || '';
+        document.getElementById('material').value = item.material || '';
+        document.getElementById('colour').value = item.colour || '';
+        document.getElementById('image').value = item.image || '';
+
+        // Show the edit form
+        // document.getElementById('edit-item-form').style.display = 'block';
+        const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
+        editItemModal.show();
+    } catch (error) {
+        console.error('Error fetching item:', error.message);
+    }
+}
+
+function resetForm() {
+    document.getElementById('item-id').value = '';
+    document.getElementById('stock-form').reset();
+}
+
+// function showEditItemForm(item) {
+//     if (!item) {
+//         console.error('Item not found');
+//         return;
+//     }
+
+//     resetForm();
+//     document.getElementById('item-id').value = item.item_id;
+//     document.getElementById('name').value = item.name;
+//     document.getElementById('categoryid').value = item.categoryid;
+//     document.getElementById('description').value = item.description;
+//     document.getElementById('price').value = item.price;
+//     document.getElementById('stock').value = item.stock;
+//     document.getElementById('material').value = item.material;
+//     document.getElementById('colour').value = item.colour;
+//     document.getElementById('image').value = item.image;
+    
+//     const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
+//     editItemModal.show();
+// }
+
+// function resetForm() {
+//     document.getElementById('item-id').value = '';
+//     document.getElementById('stock-form').reset();
+// }
+
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     document.querySelectorAll('.edit-btn').forEach(button => {
+//         button.addEventListener('click', (event) => {
+//             const itemId = event.target.getAttribute('data-id');
+//             showEditItemForm(itemId);
+//         });
+//     });
+// });
+
+
+
+
+
+
+
+
