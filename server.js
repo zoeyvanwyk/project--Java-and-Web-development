@@ -218,6 +218,17 @@ app.put('/api/stock/:id', async (req, res) => {
     }
 });
 
+// attempting to get specific items information for the checkout page
+app.get('/api/stock', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT item_id, name, image, stock, colour, material, price FROM stock');
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 // API endpoint to delete a stock item
 app.delete('/api/stock/:id', async (req, res) => {
