@@ -48,21 +48,10 @@
 
 document.addEventListener("DOMContentLoaded", async function() {
   // Function to fetch cart items
-  async function fetchCartItems() {
-      try {
-          const response = await fetch('http://localhost:3000/api/stock');
-          if (response.ok) {
-              const items = await response.json();
-              return items;
-          } else {
-              console.error('Failed to fetch cart items');
-              return [];
-          }
-      } catch (error) {
-          console.error('Error fetching cart items:', error);
-          return [];
-      }
-  }
+  function getCartItemsFromCookies() {
+    const cartCookie = document.cookie.split('; ').find(row => row.startsWith('cart='));
+    return cartCookie ? JSON.parse(decodeURIComponent(cartCookie.split('=')[1])) : [];
+}
 
   // Function to create a cart item template
   function createCartItemTemplate(item) {
@@ -89,18 +78,18 @@ document.addEventListener("DOMContentLoaded", async function() {
 
   // Function to display cart items
   async function displayCartItems() {
-      const cartItems = await fetchCartItems();
-      const orderSummaryContainer = document.getElementById('order-summary-container');
+    const cartItems = getCartItemsFromCookies();
+    const orderSummaryContainer = document.getElementById('order-summary-container');
 
-      let totalCost = 0;
-      orderSummaryContainer.innerHTML = cartItems.map(item => {
-          totalCost += item.price;
-          return createCartItemTemplate(item);
-      }).join('');
+    let totalCost = 0;
+    orderSummaryContainer.innerHTML = cartItems.map(item => {
+        totalCost += item.price;
+        return createCartItemTemplate(item);
+    }).join('');
 
-      document.getElementById('order-total').textContent = `R${totalCost}.00`;
-      document.getElementById('delivery-cost').textContent = `R0.00`; // Update delivery cost if needed
-  }
+    document.getElementById('order-total').textContent = `R${totalCost}.00`;
+    document.getElementById('delivery-cost').textContent = `R0.00`; // Update delivery cost if needed
+}
 
   displayCartItems();
 });
@@ -108,6 +97,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
 var cardDrop = document.getElementById('card-dropdown');
 var activeDropdown;
+
 cardDrop.addEventListener('click',function(){
 var node;
 for (var i = 0; i < this.childNodes.length-1; i++)

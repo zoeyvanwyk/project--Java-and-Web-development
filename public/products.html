@@ -50,7 +50,9 @@
                                 <p id="popup-product-description">Description</p>
                                 <p id="popup-product-material">Material</p>
                                 <p id="popup-product-colour">Colour</p>
-                                <button id="add-to-cart-btn" class="btn btn-primary">Add to Cart</button>
+                                <button class="btn btn-success btn-sm add-to-cart-button">Add to Cart</button>
+                                <!-- <button id="add-to-cart-btn" class="btn btn-primary">Add to Cart</button> -->
+                                <!-- <button class="btn btn-success btn-sm add-to-cart-button" data-id="${item.item_id}" data-name="${item.name}" data-price="${item.price}" data-image="${item.image}">Add to Cart</button> -->
                             </div>
                         </div>
                     </div>
@@ -112,7 +114,36 @@
                         return [];
                     }
                 }
-    
+                
+                function addToCart(item) {
+                    // Get the existing cart from the cookies
+                    let cart = getCartFromCookies();
+
+                    // Check if the item is already in the cart
+                    const existingItem = cart.find(cartItem => cartItem.id === item.id);
+                    if (existingItem) {
+                        alert(`${item.name} is already in the cart.`);
+                    } else {
+                        // Add the item to the cart
+                        cart.push(item);
+                        // Save the updated cart back to the cookies
+                        saveCartToCookies(cart);
+                        alert(`${item.name} has been added to the cart.`);
+                    }
+
+                    function getCartFromCookies() {
+                        const cartCookie = document.cookie.split('; ').find(row => row.startsWith('cart='));
+                        return cartCookie ? JSON.parse(decodeURIComponent(cartCookie.split('=')[1])) : [];
+                    }
+
+                    function saveCartToCookies(cart) {
+                        document.cookie = `cart=${encodeURIComponent(JSON.stringify(cart))}; path=/; max-age=31536000`; // 1-year expiry
+                    }
+
+                }
+
+                
+
                 // // Function to create a product card
                 // function createProductCard(product) {
                 //     return `
@@ -139,8 +170,6 @@
                 //         </div>
                 //     `;
                 // }
-    
-
                 //Function to create a product card
                 function createProductCard(product) {
                     return `
@@ -167,53 +196,92 @@
                         </div>
                     `;
                 }
+    
+
+                // //Function to create a product card
+                // function createProductCard(product) {
+                //     return `
+                //         <div class="col-md-3 mb-3">
+                //             <div class="card">
+                //                 <!-- Product image -->
+                //                 <img class="images card-img-top" src="${product.image}" alt="${product.name}">
+                //                 <!-- Product Details -->
+                //                 <div class="card-body p-4">
+                //                     <div class="text-center">
+                //                         <!-- Product name -->
+                //                         <h5 class="fw-bolder">${product.name}</h5>
+                //                         <!-- Product Price -->
+                //                         R${product.price}.00
+                //                     </div>
+                //                 </div>
+                //                 <!-- Product actions -->
+                //                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                //                     <div class="text-center">
+                //                         <a class="btn btn-outline-dark mt-auto" href="#" data-product-id="${product.item_id}">View options</a>
+                //                     </div>
+                //                 </div>
+                //             </div>
+                //         </div>
+                //     `;
+                // }
 
 
 
         // Function to handle "View options" button click
-        function handleViewOptionsClick(event) {
-            event.preventDefault();
-            const productId = event.target.getAttribute('data-product-id');
-            const product = products.find(p => p.item_id == productId);
-            if (product) {
-                showProductPopup(product);
-            }
-        }
+                function handleViewOptionsClick(event) {
+                    event.preventDefault();
+                    const productId = event.target.getAttribute('data-product-id');
+                    const product = products.find(p => p.item_id == productId);
+                    if (product) {
+                        showProductPopup(product);
+                    }
+                }
 
-        // Function to show the product popup
-        function showProductPopup(product) {
-            document.getElementById('popup-product-name').textContent = product.name;
-            document.getElementById('popup-product-image').src = product.image;
-            document.getElementById('popup-product-price').textContent = `Price: R${product.price}.00`;
-            document.getElementById('popup-product-stock').textContent = `Stock: ${product.stock}`;
-            document.getElementById('popup-product-description').textContent = product.description;
-            document.getElementById('popup-product-material').textContent = product.material;
-            document.getElementById('popup-product-colour').textContent = product.colour;
+                // Function to show the product popup
+                function showProductPopup(product) {
+                    document.getElementById('popup-product-name').textContent = product.name;
+                    document.getElementById('popup-product-image').src = product.image;
+                    document.getElementById('popup-product-price').textContent = `Price: R${product.price}.00`;
+                    document.getElementById('popup-product-stock').textContent = `Stock: ${product.stock}`;
+                    document.getElementById('popup-product-description').textContent = product.description;
+                    document.getElementById('popup-product-material').textContent = product.material;
+                    document.getElementById('popup-product-colour').textContent = product.colour;
 
-            // Display the modal
-            const modal = new bootstrap.Modal(document.getElementById('product-popup'), {});
-            modal.show();
-        }
+                    // Attach event listener to the "Add to Cart" button
+                    const addToCartBtn = document.querySelector('.add-to-cart-button');
+                    addToCartBtn.addEventListener('click', () => {
+                        addToCart({
+                            id: product.item_id,
+                            name: product.name,
+                            price: product.price,
+                            image: product.image
+                        });
+                    });
+
+                    // Display the modal
+                    const modal = new bootstrap.Modal(document.getElementById('product-popup'), {});
+                    modal.show();
+                }
 
                 // Function to display products on the page
                 async function displayProducts() {
                     const queryParams = getQueryParams();
                     const categoryId = queryParams.category;
                     const categoryName = await fetchCategoryName(categoryId);
-    
+
                     const categoryTitleElement = document.getElementById("category-title");
                     categoryTitleElement.textContent = categoryName;
-    
+
                     products = await fetchProducts(categoryId);
                     const productContainer = document.getElementById("products-container");
                     productContainer.innerHTML = products.map(createProductCard).join('');
 
-                     // Add event listeners to "View options" buttons
+                    // Add event listeners to "View options" buttons
                     document.querySelectorAll('.btn-outline-dark').forEach(button => {
                         button.addEventListener('click', handleViewOptionsClick);
                     });
                 }
-    
+
                 displayProducts();
             });
         </script>
