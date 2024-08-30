@@ -5,36 +5,143 @@ document.addEventListener('DOMContentLoaded', () => {
         showAddItemForm();
     });
 
-    document.getElementById('stock-form').addEventListener('submit', async (event) => {
+    // document.getElementById('stock-form').addEventListener('submit', async (event) => {
+    //     event.preventDefault();
+    //     console.log('Form submitted');
+
+    //     const itemId = document.getElementById('item-id').value;
+    //     const data = {
+    //         name: document.getElementById('name').value,
+    //         categoryid: Number(document.getElementById('categoryid').value), // Ensure this is a number
+    //         description: document.getElementById('description').value,
+    //         price: Number(document.getElementById('price').value), // Ensure this is a number
+    //         stock: Number(document.getElementById('stock').value), // Ensure this is a number
+    //         material: document.getElementById('material').value,
+    //         colour: document.getElementById('colour').value,
+    //         image: document.getElementById('image').value
+    //     };
+
+    //     console.log('Form data:', data);
+    //     console.log('Item ID:', itemId);
+
+    //     if (itemId) {
+    //         // Edit item
+    //         console.log('Editing item:', itemId);
+    //         await editItem(itemId, data);
+    //     } else {
+    //         // Add item
+    //         console.log('Adding new item');
+    //         await addItem(data);
+    //     }
+    // });
+   
+    document.getElementById('add-item-form').addEventListener('submit', async (event) => {
         event.preventDefault();
-        console.log('Form submitted');
-
-        const itemId = document.getElementById('item-id').value;
         const data = {
-            name: document.getElementById('name').value,
-            categoryid: Number(document.getElementById('categoryid').value), // Ensure this is a number
-            description: document.getElementById('description').value,
-            price: Number(document.getElementById('price').value), // Ensure this is a number
-            stock: Number(document.getElementById('stock').value), // Ensure this is a number
-            material: document.getElementById('material').value,
-            colour: document.getElementById('colour').value,
-            image: document.getElementById('image').value
+            name: document.getElementById('add-name').value,
+            categoryid: Number(document.getElementById('add-categoryid').value),
+            description: document.getElementById('add-description').value,
+            price: Number(document.getElementById('add-price').value),
+            stock: Number(document.getElementById('add-stock').value),
+            material: document.getElementById('add-material').value,
+            colour: document.getElementById('add-colour').value,
+            image: document.getElementById('add-image').value
         };
+        await addItem(data);
+    });
 
-        console.log('Form data:', data);
-        console.log('Item ID:', itemId);
+    // document.getElementById('edit-item-form').addEventListener('submit', async (event) => {
+    //     event.preventDefault();
+    //     const itemId = document.getElementById('edit-item-id').value ;
+    //     // $('#editItemModal').modal('show');
+    //     const data = {
+    //         name: document.getElementById('edit-name').value,
+    //         categoryid: Number(document.getElementById('edit-categoryid').value),
+    //         description: document.getElementById('edit-description').value,
+    //         price: Number(document.getElementById('edit-price').value),
+    //         stock: Number(document.getElementById('edit-stock').value),
+    //         material: document.getElementById('edit-material').value,
+    //         colour: document.getElementById('edit-colour').value,
+    //         image: document.getElementById('edit-image').value
+    //     };
+    //     await editItem(itemId, data);
+    // });
+    // document.getElementById('edit-item-form').addEventListener('submit', async (event) => {
+    //     event.preventDefault();
+    //     const itemId = document.getElementById('edit-item-id').value;
+    //     const data = {
+    //         name: document.getElementById('edit-name').value,
+    //         categoryid: Number(document.getElementById('edit-categoryid').value),
+    //         description: document.getElementById('edit-description').value,
+    //         price: Number(document.getElementById('edit-price').value),
+    //         stock: Number(document.getElementById('edit-stock').value),
+    //         material: document.getElementById('edit-material').value,
+    //         colour: document.getElementById('edit-colour').value,
+    //         image: document.getElementById('edit-image').value
+    //     };
+    //     console.log('Editing item:', itemId);
+    //     console.log('Data:', data);
+    //     await editItem(itemId, data);
+    // });
+    // document.getElementById('edit-item-form').addEventListener('submit', async (event) => {
+    //     event.preventDefault();
+    //     const itemId = document.getElementById('edit-item-id').value; // Correctly get the itemId
+    //     const data = {
+    //         name: document.getElementById('edit-name').value,
+    //         categoryid: Number(document.getElementById('edit-categoryid').value),
+    //         description: document.getElementById('edit-description').value,
+    //         price: Number(document.getElementById('edit-price').value),
+    //         stock: Number(document.getElementById('edit-stock').value),
+    //         material: document.getElementById('edit-material').value,
+    //         colour: document.getElementById('edit-colour').value,
+    //         image: document.getElementById('edit-image').value
+    //     };
+    
+    //     console.log('Editing item:', itemId); // Debugging line
+    //     console.log('Data:', data); // Debugging line
+    
+    //     if (itemId) {
+    //         await editItem(itemId, data);
+    //     } else {
+    //         console.error('Item ID is missing');
+    //     }
+    // });
 
-        if (itemId) {
-            // Edit item
-            console.log('Editing item:', itemId);
+    document.getElementById('edit-item-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        // Correctly get itemId from the form field
+        const itemId = document.getElementById('edit-item-id').value;
+        
+        // Check if itemId is correctly set
+        if (!itemId) {
+            console.error('Item ID is missing');
+            return;
+        }
+    
+        const data = {
+            name: document.getElementById('edit-name').value,
+            categoryid: Number(document.getElementById('edit-categoryid').value),
+            description: document.getElementById('edit-description').value,
+            price: Number(document.getElementById('edit-price').value),
+            stock: Number(document.getElementById('edit-stock').value),
+            material: document.getElementById('edit-material').value,
+            colour: document.getElementById('edit-colour').value,
+            image: document.getElementById('edit-image').value
+        };
+    
+        console.log('Editing item:', itemId); // Debugging line
+        console.log('Data:', data); // Debugging line
+    
+        try {
             await editItem(itemId, data);
-        } else {
-            // Add item
-            console.log('Adding new item');
-            await addItem(data);
+        } catch (error) {
+            console.error('Error editing item:', error);
         }
     });
-   
+    
+    
+
 });
 
 async function loadStockItems() {
@@ -47,6 +154,25 @@ async function loadStockItems() {
     }
 }
 
+// function displayItems(items) {
+//     const stockItems = document.getElementById('stock-items');
+//     stockItems.innerHTML = '';
+//     items.forEach(item => {
+//         const itemRow = `
+//             <tr>
+//                 <td><img src="${item.image}" alt="${item.name}" style="width: 50px; height: 50px;"></td>
+//                 <td>${item.name}</td>
+//                 <td>${item.price}</td>
+//                 <td>${item.stock}</td>
+//                 <td>
+//                     <button class="btn btn-secondary btn-sm edit-button" data-id="${item.item_id}">Edit</button>
+//                     <button class="btn btn-danger btn-sm delete-button" data-id="${item.item_id}">Delete</button>
+                    
+//                 </td>
+//             </tr>
+//         `;
+//         stockItems.insertAdjacentHTML('beforeend', itemRow);
+//     });
 function displayItems(items) {
     const stockItems = document.getElementById('stock-items');
     stockItems.innerHTML = '';
@@ -60,24 +186,29 @@ function displayItems(items) {
                 <td>
                     <button class="btn btn-secondary btn-sm edit-button" data-id="${item.item_id}">Edit</button>
                     <button class="btn btn-danger btn-sm delete-button" data-id="${item.item_id}">Delete</button>
-                    
                 </td>
             </tr>
         `;
         stockItems.insertAdjacentHTML('beforeend', itemRow);
     });
 
-
-
-    // Attach event listeners to the edit and delete buttons
     document.querySelectorAll('.edit-button').forEach(button => {
         button.addEventListener('click', event => {
             const itemId = event.target.getAttribute('data-id');
-            // const item = items.find(i => i.item_id === itemId);
-            // const itemId = event.target.getAttribute('data-id');
             showEditItemForm(itemId);
         });
     });
+
+
+    // // Attach event listeners to the edit and delete buttons
+    // document.querySelectorAll('.edit-button').forEach(button => {
+    //     button.addEventListener('click', event => {
+    //         const itemId = event.target.getAttribute('data-id');
+    //         // const item = items.find(i => i.item_id === itemId);
+    //         // const itemId = event.target.getAttribute('data-id');
+    //         showEditItemForm(itemId);
+    //     });
+    // });
 
     document.querySelectorAll('.delete-button').forEach(button => {
         button.addEventListener('click', event => {
@@ -100,22 +231,26 @@ async function addItem(data) {
         const newItem = await response.json();
         console.log('New item added:', newItem);
         loadStockItems();
-        const editItemModal = bootstrap.Modal.getInstance(document.getElementById('editItemModal'));
-        editItemModal.hide();
+        const addItemModal = bootstrap.Modal.getInstance(document.getElementById('addItemModal'));
+        addItemModal.hide();
     } catch (error) {
         console.error('Error adding item:', error);
     }
 }
 
 async function editItem(itemId, data) {
+    console.log('Sending PATCH request for item ID:', itemId);
     try {
         const response = await fetch(`/api/stock/${itemId}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         });
+        if (!response.ok) {
+            throw new Error('Error updating item');
+        }
         const updatedItem = await response.json();
         console.log('Item updated:', updatedItem);
         loadStockItems();
@@ -139,41 +274,75 @@ async function deleteItem(itemId) {
 }
 
 function showAddItemForm() {
-    resetForm();
-    const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
-    editItemModal.show();
+    resetForm('add-item-form');
+    const addItemModal = new bootstrap.Modal(document.getElementById('addItemModal'));
+    addItemModal.show();
 }
 
+
+// Example function to show the edit form and populate it
 async function showEditItemForm(itemId) {
     try {
-        // const response = await fetch(`http://localhost:3000/api/stock/${itemId}`);
         const response = await fetch(`/api/stock/${itemId}`);
-        if (!response.ok) {
-            throw new Error('Item not found');
-        }
         const item = await response.json();
-        document.getElementById('item-id').value = item.item_id || '';
-        document.getElementById('name').value = item.name || '';
-        document.getElementById('categoryid').value = item.categoryid || '';
-        document.getElementById('description').value = item.description || '';
-        document.getElementById('price').value = item.price || '';
-        document.getElementById('stock').value = item.stock || '';
-        document.getElementById('material').value = item.material || '';
-        document.getElementById('colour').value = item.colour || '';
-        document.getElementById('image').value = item.image || '';
 
-        // Show the edit form
-        // document.getElementById('edit-item-form').style.display = 'block';
+        if (!itemId || itemId === 'undefined') {
+            console.error('Item ID is missing or incorrect');
+            return;
+        }
+
+        document.getElementById('edit-item-id').value = item.item_id; // Make sure this ID is set correctly
+        document.getElementById('edit-name').value = item.name;
+        document.getElementById('edit-categoryid').value = item.categoryid;
+        document.getElementById('edit-description').value = item.description;
+        document.getElementById('edit-price').value = item.price;
+        document.getElementById('edit-stock').value = item.stock;
+        document.getElementById('edit-material').value = item.material;
+        document.getElementById('edit-colour').value = item.colour;
+        document.getElementById('edit-image').value = item.image;
+
         const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
         editItemModal.show();
     } catch (error) {
-        console.error('Error fetching item:', error.message);
+        console.error('Error fetching item details:', error);
     }
 }
 
+document.getElementById('edit-item-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-function resetForm() {
-    document.getElementById('item-id').value = '';
-    document.getElementById('stock-form').reset();
+    const itemId = document.getElementById('edit-item-id').value;
+
+    if (!itemId) {
+        console.error('Item ID is missing');
+        return;
+    }
+
+    const data = {
+        name: document.getElementById('edit-name').value,
+        categoryid: Number(document.getElementById('edit-categoryid').value),
+        description: document.getElementById('edit-description').value,
+        price: Number(document.getElementById('edit-price').value),
+        stock: Number(document.getElementById('edit-stock').value),
+        material: document.getElementById('edit-material').value,
+        colour: document.getElementById('edit-colour').value,
+        image: document.getElementById('edit-image').value
+    };
+
+    console.log('Editing item:', itemId);
+    console.log('Data:', data);
+
+    try {
+        await editItem(itemId, data);
+    } catch (error) {
+        console.error('Error editing item:', error);
+    }
+});
+
+
+function resetForm(formId) {
+    // document.getElementById('item-id').value = item.id;
+    // document.getElementById('stock-form').reset();
+    document.getElementById(formId).reset();
 }
 

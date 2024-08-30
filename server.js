@@ -151,7 +151,7 @@ app.get('/api/stock/:id', async (req, res) => {
     const itemId = parseInt(req.params.id, 10);
     // const { id } = req.params;
     try {
-        const result = await pool.query('SELECT * FROM stock WHERE item_id = $1', [id]);
+        const result = await pool.query('SELECT * FROM stock WHERE item_id = $1', [itemId]);
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Item not found' });
         }
@@ -193,39 +193,78 @@ app.post('/api/stock', async (req, res) => {
 });
 
 
-//API endpoint to update an existing stock item
-app.put('/api/stock/:id', async (req, res) => {
-    const { id } = req.params;
+
+// API endpoint to edit stock item
+app.patch('/api/stock/:item_id', async (req, res) => {
+    console.log('Params:', req.params);
+    const item_id = req.params.item_id;
+    // const { id } = req.params; // problem child potentially
+    console.log('Item ID:', item_id);
+    //const { name, categoryid, description, price, stock, material, colour, image } = req.body;
+     // Ensure item_id is not 'undefined'
+     if (!item_id || item_id === 'undefined') {
+        return res.status(400).json({ error: 'Invalid item ID' });
+    }
+
     const { name, categoryid, description, price, stock, material, colour, image } = req.body;
 
-    if (!name || !categoryid || !price || !stock) {
-        return res.status(400).send('Invalid input data');
+    // Build the SET clause dynamically
+    const updates = [];
+    const values = [];
+    let index = 1;
+
+    if (name) {
+        updates.push(`name = $${index++}`);
+        values.push(name);
     }
-    
+    if (categoryid) {
+        updates.push(`categoryid = $${index++}`);
+        values.push(categoryid);
+    }
+    if (description) {
+        updates.push(`description = $${index++}`);
+        values.push(description);
+    }
+    if (price) {
+        updates.push(`price = $${index++}`);
+        values.push(price);
+    }
+    if (stock) {
+        updates.push(`stock = $${index++}`);
+        values.push(stock);
+    }
+    if (material) {
+        updates.push(`material = $${index++}`);
+        values.push(material);
+    }
+    if (colour) {
+        updates.push(`colour = $${index++}`);
+        values.push(colour);
+    }
+    if (image) {
+        updates.push(`image = $${index++}`);
+        values.push(image);
+    }
+
+    // Check if there are any updates
+    if (updates.length === 0) {
+        return res.status(400).json({ error: 'No fields to update' });
+    }
+
+    values.push(item_id); // Add the ID to the end of the values array
+
     try {
         const result = await pool.query(
-            'UPDATE stock SET name = $1, categoryid = $2, description = $3, price = $4, stock = $5, material = $6, colour = $7, image = $8 WHERE item_id = $9 RETURNING *',
-            [name, categoryid, description, price, stock, material, colour, image, id]
+            `UPDATE stock SET ${updates.join(', ')} WHERE item_id = $${index} RETURNING *`,
+            values
         );
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Item not found' });
         }
         res.json(result.rows[0]);
     } catch (error) {
-        console.error(error);
-        console.error('Error in PUT /api/stock/:id:', error);
+        console.error('Error in PATCH /api/stock/:item_id:', error);
         res.status(500).json({ error: 'Internal Server Error during item update' });
-    }
-});
-
-// attempting to get specific items information for the checkout page
-app.get('/api/stock', async (req, res) => {
-    try {
-        const result = await pool.query('SELECT item_id, name, image, stock, colour, material, price FROM stock');
-        res.json(result.rows);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 

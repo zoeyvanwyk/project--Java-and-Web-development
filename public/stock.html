@@ -91,7 +91,7 @@
 
 
     <!-- Edit Item Modal -->
-    <div class="modal fade" id="editItemModal" tabindex="-1" aria-labelledby="editItemModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="editItemModal" tabindex="-1" aria-labelledby="editItemModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -102,7 +102,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="stock-form">
-                        <input type="hidden" id="item-id" name="item-id">
+                        <input type="hidden" id="item-id" name="item-id" value="">
                         <input type="text" id="name" name="name" placeholder="Name" required class="form-control mb-3">
                         <input type="number" id="categoryid" name="categoryid" placeholder="Category ID" required class="form-control mb-3">
                         <textarea id="description" name="description" placeholder="Description" required class="form-control mb-3"></textarea>
@@ -112,6 +112,61 @@
                         <input type="text" id="colour" name="colour" placeholder="Colour" required class="form-control mb-3">
                         <input type="text" id="image" name="image" placeholder="Image URL" required class="form-control mb-3">
                         <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Add Item Modal -->
+    <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addItemModalLabel">Add New Item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-item-form">
+                        <input type="text" id="add-name" name="name" placeholder="Name" required class="form-control mb-3">
+                        <input type="number" id="add-categoryid" name="categoryid" placeholder="Category ID" required class="form-control mb-3">
+                        <textarea id="add-description" name="description" placeholder="Description" required class="form-control mb-3"></textarea>
+                        <input type="number" id="add-price" name="price" placeholder="Price" required class="form-control mb-3">
+                        <input type="number" id="add-stock" name="stock" placeholder="Stock" required class="form-control mb-3">
+                        <input type="text" id="add-material" name="material" placeholder="Material" required class="form-control mb-3">
+                        <input type="text" id="add-colour" name="colour" placeholder="Colour" required class="form-control mb-3">
+                        <input type="text" id="add-image" name="image" placeholder="Image URL" required class="form-control mb-3">
+                        <button type="submit" class="btn btn-primary">Add Item</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Item Modal -->
+    <div class="modal fade" id="editItemModal" tabindex="-1" aria-labelledby="editItemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editItemModalLabel">Edit Item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-item-form">
+                        <input type="number" id="edit-item-id" name="item_id" value="">
+                        <input type="text" id="edit-name" name="name" placeholder="Name" required class="form-control mb-3">
+                        <input type="number" id="edit-categoryid" name="categoryid" placeholder="Category ID" required class="form-control mb-3">
+                        <textarea id="edit-description" name="description" placeholder="Description" required class="form-control mb-3"></textarea>
+                        <input type="number" id="edit-price" name="price" placeholder="Price" required class="form-control mb-3">
+                        <input type="number" id="edit-stock" name="stock" placeholder="Stock" required class="form-control mb-3">
+                        <input type="text" id="edit-material" name="material" placeholder="Material" required class="form-control mb-3">
+                        <input type="text" id="edit-colour" name="colour" placeholder="Colour" required class="form-control mb-3">
+                        <input type="text" id="edit-image" name="image" placeholder="Image URL" required class="form-control mb-3">
+                        <button type="submit" class="btn btn-primary">Update Item</button>
                     </form>
                 </div>
             </div>
