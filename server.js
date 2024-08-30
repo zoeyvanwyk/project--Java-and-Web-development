@@ -16,12 +16,10 @@ const pool = new Pool({
     port: 5432,
 });
 
-
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 
 // Function to generate a session token
@@ -162,8 +160,6 @@ app.get('/api/stock/:id', async (req, res) => {
     }
 });
 
-
-
 // API endpoint to fetch all stock items
 app.get('/api/stock', async (req, res) => {
     try {
@@ -174,7 +170,6 @@ app.get('/api/stock', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error from getting stock' });
     }
 });
-
 
 // API endpoint to add a new stock item
 app.post('/api/stock', async (req, res) => {
@@ -192,20 +187,15 @@ app.post('/api/stock', async (req, res) => {
     }
 });
 
-
-
 // API endpoint to edit stock item
 app.patch('/api/stock/:item_id', async (req, res) => {
-    console.log('Params:', req.params);
     const item_id = req.params.item_id;
-    // const { id } = req.params; // problem child potentially
-    console.log('Item ID:', item_id);
-    //const { name, categoryid, description, price, stock, material, colour, image } = req.body;
+    
      // Ensure item_id is not 'undefined'
      if (!item_id || item_id === 'undefined') {
         return res.status(400).json({ error: 'Invalid item ID' });
     }
-
+    console.log('Item ID:', item_id);
     const { name, categoryid, description, price, stock, material, colour, image } = req.body;
 
     // Build the SET clause dynamically
@@ -268,27 +258,21 @@ app.patch('/api/stock/:item_id', async (req, res) => {
     }
 });
 
-
 // API endpoint to delete a stock item
 app.delete('/api/stock/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        // const itemId = req.params.id; // Correctly define itemId
-        // await pool.query('DELETE FROM stock WHERE item_id = $1', [itemID]);
-        // res.json({ success: true });
+        
         const result = await pool.query('DELETE FROM stock WHERE item_id = $1 RETURNING *', [id]);
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Item not found' });
         }
         res.json(result.rows[0]);
     } catch (err) {
-        console.error(err);
-        console.error('Error deleting item:', error);
+        console.error('Error deleting item:', err);
         res.status(500).json({ error: 'Internal Server Error during item deletion' });
     }
 });
-
-
 
 // Handle the root URL
 app.get('/', (req, res) => {
@@ -305,12 +289,10 @@ app.get('/protected-route', verifyToken, (req, res) => {
     res.send('This is a protected route.');
 });
 
-
 // Handle the sign-up page
 app.get('/signup', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'signup-page.html'));
 });
-
 
 // Logout endpoint
 app.post('/logout', (req, res) => {
@@ -320,8 +302,6 @@ app.post('/logout', (req, res) => {
 });
 
 
-
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
 });
-
