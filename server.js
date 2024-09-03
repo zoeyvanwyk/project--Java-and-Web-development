@@ -284,52 +284,22 @@ app.delete('/api/stock/:id', async (req, res) => {
     }
 });
 
-
-// API endpoint to handle checkout and update stock quantities
+// API endpoint to handle checkout and send a success message
 app.post('/api/checkout', async (req, res) => {
+    // You can keep the cartItems variable if you want to log or use it for other purposes
     const { cartItems } = req.body;
 
     try {
-        // Start a transaction to ensure atomicity
-        await pool.query('BEGIN');
+        // You can log the cartItems for debugging or other purposes
+        console.log("Cart Items:", cartItems);
 
-        for (const item of cartItems) {
-            const { item_id, quantity } = item;
-
-            // Check the current stock of the item
-            const result = await pool.query('SELECT stock FROM stock WHERE item_id = $1', [item_id]);
-
-            if (result.rows.length === 0) {
-                await pool.query('ROLLBACK');
-                return res.status(404).json({ error: `Item with ID ${item_id} not found.` });
-            }
-
-            const currentStock = result.rows[0].stock;
-
-            // Ensure there's enough stock to fulfill the order
-            if (currentStock < quantity) {
-                await pool.query('ROLLBACK');
-                return res.status(400).json({ error: `Insufficient stock for item with ID ${item_id}.` });
-            }
-
-            // Decrease the stock
-            await pool.query(
-                'UPDATE stock SET stock = stock - $1 WHERE item_id = $2',
-                [quantity, item_id]
-            );
-        }
-
-        // If everything is successful, commit the transaction
-        await pool.query('COMMIT');
-        res.status(200).json({ message: 'Order placed successfully and stock updated.' });
+        // Send a success response without interacting with the database
+        res.status(200).json({ message: 'Order placed successfully!' });
     } catch (error) {
-        // If there's an error, roll back the transaction
-        await pool.query('ROLLBACK');
         console.error('Error during checkout:', error);
         res.status(500).json({ error: 'Internal Server Error during checkout.' });
     }
 });
-
 
 // API endpoint to calculate the total amount
 app.post('/api/calculate-total', async (req, res) => {
@@ -355,13 +325,15 @@ app.post('/api/calculate-total', async (req, res) => {
     }
 });
 
-// API endpoint to update the quantity of an item in the cart
+
+// API endpoint to update the quantity of an item in the cart 
 app.patch('/api/cart/:item_id', async (req, res) => {
     const item_id = req.params.item_id;
     const { quantity } = req.body;
 
     try {
-        await pool.query('UPDATE cart SET quantity = $1 WHERE item_id = $2', [quantity, item_id]);
+        // Instead of updating the quantity in the database, you can just send a success response
+        //         await pool.query('UPDATE cart SET quantity = $1 WHERE item_id = $2', [quantity, item_id]);
         res.status(200).json({ message: 'Quantity updated successfully' });
     } catch (error) {
         console.error('Error updating quantity:', error);
