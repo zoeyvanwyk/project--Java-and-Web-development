@@ -163,21 +163,83 @@ function showAddItemForm() {
     addItemModal.show();
 }
 
+// async function showEditItemForm(itemId) {
+//     try {
+//         const response = await fetch(`/api/stock/${itemId}`);
+//         const item = await response.json();
+
+        
+
+//         if (!itemId || itemId === 'undefined') {
+//             console.error('Item ID is missing or incorrect');
+//             return;
+//         }
+
+//          // Populate the edit form fields with the item's data
+//         document.getElementById('edit-item-id').value = item.item_id; 
+//         document.getElementById('edit-name').value = item.name;
+//         document.getElementById('edit-categoryid').value = item.categoryid;
+//         document.getElementById('edit-description').value = item.description;
+//         document.getElementById('edit-price').value = item.price;
+//         document.getElementById('edit-stock').value = item.stock;
+//         document.getElementById('edit-material').value = item.material;
+//         document.getElementById('edit-colour').value = item.colour;
+//         document.getElementById('edit-image').value = item.image;
+
+//         // Show the edit modal
+//         const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
+//         editItemModal.show();
+//     } catch (error) {
+//         console.error('Error fetching item details:', error);
+//     }
+// }
+
+// document.getElementById('edit-item-form').addEventListener('submit', async (event) => {
+//     event.preventDefault();
+
+//     const itemId = document.getElementById('edit-item-id').value;
+
+//     if (!itemId) {
+//         console.error('Item ID is missing');
+//         return;
+//     }
+
+//     const data = {
+//         name: document.getElementById('edit-name').value,
+//         categoryid: Number(document.getElementById('edit-categoryid').value),
+//         description: document.getElementById('edit-description').value,
+//         price: Number(document.getElementById('edit-price').value),
+//         stock: Number(document.getElementById('edit-stock').value),
+//         material: document.getElementById('edit-material').value,
+//         colour: document.getElementById('edit-colour').value,
+//         image: document.getElementById('edit-image').value
+//     };
+
+//     console.log('Editing item:', itemId);
+//     console.log('Data:', data);
+
+//     try {
+//         await editItem(itemId, data);
+//     } catch (error) {
+//         console.error('Error editing item:', error);
+//     }
+// });
+
 async function showEditItemForm(itemId) {
     try {
         const response = await fetch(`/api/stock/${itemId}`);
         const item = await response.json();
 
-        // Log the fetched item to the console for debugging
-        console.log('Fetched item:', item);
-
-        if (!itemId || itemId === 'undefined') {
+        if (!itemId || !item) {
             console.error('Item ID is missing or incorrect');
             return;
         }
 
-         // Populate the edit form fields with the item's data
-        document.getElementById('edit-item-id').value = item.item_id; 
+        // Log fetched item data
+        console.log('Fetched item:', item);
+
+        // Populate the edit form fields with the item's data
+        document.getElementById('edit-item-id').value = item.item_id;
         document.getElementById('edit-name').value = item.name;
         document.getElementById('edit-categoryid').value = item.categoryid;
         document.getElementById('edit-description').value = item.description;
@@ -187,6 +249,19 @@ async function showEditItemForm(itemId) {
         document.getElementById('edit-colour').value = item.colour;
         document.getElementById('edit-image').value = item.image;
 
+        // Log form field values after assignment
+        console.log('Form populated:', {
+            item_id: document.getElementById('edit-item-id').value,
+            name: document.getElementById('edit-name').value,
+            categoryid: document.getElementById('edit-categoryid').value,
+            description: document.getElementById('edit-description').value,
+            price: document.getElementById('edit-price').value,
+            stock: document.getElementById('edit-stock').value,
+            material: document.getElementById('edit-material').value,
+            colour: document.getElementById('edit-colour').value,
+            image: document.getElementById('edit-image').value
+        });
+
         // Show the edit modal
         const editItemModal = new bootstrap.Modal(document.getElementById('editItemModal'));
         editItemModal.show();
@@ -194,37 +269,6 @@ async function showEditItemForm(itemId) {
         console.error('Error fetching item details:', error);
     }
 }
-
-document.getElementById('edit-item-form').addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    const itemId = document.getElementById('edit-item-id').value;
-
-    if (!itemId) {
-        console.error('Item ID is missing');
-        return;
-    }
-
-    const data = {
-        name: document.getElementById('edit-name').value,
-        categoryid: Number(document.getElementById('edit-categoryid').value),
-        description: document.getElementById('edit-description').value,
-        price: Number(document.getElementById('edit-price').value),
-        stock: Number(document.getElementById('edit-stock').value),
-        material: document.getElementById('edit-material').value,
-        colour: document.getElementById('edit-colour').value,
-        image: document.getElementById('edit-image').value
-    };
-
-    console.log('Editing item:', itemId);
-    console.log('Data:', data);
-
-    try {
-        await editItem(itemId, data);
-    } catch (error) {
-        console.error('Error editing item:', error);
-    }
-});
 
 
 function resetForm(formId) {

@@ -36,7 +36,7 @@ const verifyToken = (req, res, next) => {
         return res.status(401).json({ error: 'Unauthorized' });
     }
     // Placeholder for token validation logic
-    const isValid = true; // Replace with actual validation
+    const isValid = true;
     if (isValid) {
         next();
     } else {
@@ -57,7 +57,6 @@ app.get('/data', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
 
 // Login endpoint
 app.post('/login', async (req, res) => {
@@ -87,7 +86,6 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
 
 // Sign-up endpoint
 app.post('/sign-up', async (req, res) => {
@@ -144,21 +142,33 @@ app.get('/api/stock/:categoryId', async (req, res) => {
     }
 });
 
-//API endpoint to fetch a specific stock item by ID
+
 app.get('/api/stock/:id', async (req, res) => {
-    const itemId = parseInt(req.params.id, 10);
-    // const { id } = req.params;
+    const itemId = parseInt(req.params.id, 10); // Convert ID to integer
+
+    if (isNaN(itemId)) {
+        console.log('Invalid ID:', req.params.id);
+        return res.status(400).json({ error: 'Invalid ID format' });
+    }
+
+    console.log('Fetching item ID:', itemId);
+
     try {
-        const result = await pool.query('SELECT * FROM stock WHERE item_id = $1', [itemId]);
-        if (result.rows.length === 0) {
+        const { rows } = await db.query('SELECT * FROM stock WHERE item_id = $1' , [itemId]);
+
+        console.log('Query result:', rows);
+
+        if (rows.length === 0) {
             return res.status(404).json({ error: 'Item not found' });
         }
-        res.json(result.rows[0]); // Return a single item, not an array
+
+        res.json(rows[0]); // Return only the first (and should be only) item found
     } catch (error) {
-        console.error('Error fetching stock item:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error('Error fetching item:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 // API endpoint to fetch all stock items
 app.get('/api/stock', async (req, res) => {
@@ -273,6 +283,106 @@ app.delete('/api/stock/:id', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error during item deletion' });
     }
 });
+
+
+// API endpoint to handle checkout and update stock quantities
+app.post('/api/checkout', async (req, res) => {
+    const { cartItems } = req.body;
+
+    try {
+        // Start a transaction to ensure atomicity
+        await pool.query('BEGIN');
+
+        for (const item of cartItems) {
+            const { item_id, quantity } = item;
+
+            // Check the current stock of the item
+            const result = await pool.query('SELECT stock FROM stock WHERE item_id = $1', [item_id]);
+
+            if (result.rows.length === 0) {
+                await pool.query('ROLLBACK');
+                return res.status(404).json({ error: `Item with ID ${item_id} not found.` });
+            }
+
+            const currentStock = result.rows[0].stock;
+
+            // Ensure there's enough stock to fulfill the order
+            if (currentStock < quantity) {
+                await pool.query('ROLLBACK');
+                return res.status(400).json({ error: `Insufficient stock for item with ID ${item_id}.` });
+            }
+
+            // Decrease the stock
+            await pool.query(
+                'UPDATE stock SET stock = stock - $1 WHERE item_id = $2',
+                [quantity, item_id]
+            );
+        }
+
+        // If everything is successful, commit the transaction
+        await pool.query('COMMIT');
+        res.status(200).json({ message: 'Order placed successfully and stock updated.' });
+    } catch (error) {
+        // If there's an error, roll back the transaction
+        await pool.query('ROLLBACK');
+        console.error('Error during checkout:', error);
+        res.status(500).json({ error: 'Internal Server Error during checkout.' });
+    }
+});
+
+
+// API endpoint to calculate the total amount
+app.post('/api/calculate-total', async (req, res) => {
+    const { cartItems } = req.body;
+
+    try {
+        let totalAmount = 0;
+
+        for (const item of cartItems) {
+            const { item_id, quantity } = item;
+
+            // Get the price of the item
+            const priceResult = await pool.query('SELECT price FROM stock WHERE item_id = $1', [item_id]);
+            const price = priceResult.rows[0].price;
+
+            totalAmount += price * quantity;
+        }
+
+        res.json({ totalAmount });
+    } catch (error) {
+        console.error('Error calculating total amount:', error);
+        res.status(500).json({ error: 'Internal Server Error during total calculation' });
+    }
+});
+
+// API endpoint to update the quantity of an item in the cart
+app.patch('/api/cart/:item_id', async (req, res) => {
+    const item_id = req.params.item_id;
+    const { quantity } = req.body;
+
+    try {
+        await pool.query('UPDATE cart SET quantity = $1 WHERE item_id = $2', [quantity, item_id]);
+        res.status(200).json({ message: 'Quantity updated successfully' });
+    } catch (error) {
+        console.error('Error updating quantity:', error);
+        res.status(500).json({ error: 'Internal Server Error during quantity update' });
+    }
+});
+
+
+// API endpoint to delete an item from the cart
+app.delete('/api/cart/:item_id', async (req, res) => {
+    const item_id = req.params.item_id;
+
+    try {
+        await pool.query('DELETE FROM cart WHERE item_id = $1', [item_id]);
+        res.status(200).json({ message: 'Item removed from cart' });
+    } catch (error) {
+        console.error('Error removing item from cart:', error);
+        res.status(500).json({ error: 'Internal Server Error during item removal' });
+    }
+});
+
 
 // Handle the root URL
 app.get('/', (req, res) => {
