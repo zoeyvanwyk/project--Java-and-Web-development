@@ -67,7 +67,6 @@
              let products = [];
              
             document.addEventListener("DOMContentLoaded", function() {
-                // Function to get query parameters
                 function getQueryParams() {
                     const params = {};
                     const queryString = window.location.search.substring(1);
@@ -120,25 +119,25 @@
                     // Check if the item is already in the cart
                     const existingItem = cart.find(cartItem => cartItem.id === item.id);
                     if (existingItem) {
-                        alert(`${item.name} is already in the cart.`);
+                        // alert(`${item.name} is already in the cart.`);
+                        
                     } else {
-                        // Add the item to the cart
                         cart.push(item);
                         // Save the updated cart back to the cookies
                         saveCartToCookies(cart);
-                        alert(`${item.name} has been added to the cart.`);
+                        showPopup(item);
                     }
-
-                    function getCartFromCookies() {
-                        const cartCookie = document.cookie.split('; ').find(row => row.startsWith('cart='));
-                        return cartCookie ? JSON.parse(decodeURIComponent(cartCookie.split('=')[1])) : [];
-                    }
-
-                    function saveCartToCookies(cart) {
-                        document.cookie = `cart=${encodeURIComponent(JSON.stringify(cart))}; path=/; max-age=31536000`; // 1-year expiry
-                    }
-
                 }
+
+                function getCartFromCookies() {
+                    const cartCookie = document.cookie.split('; ').find(row => row.startsWith('cart='));
+                    return cartCookie ? JSON.parse(decodeURIComponent(cartCookie.split('=')[1])) : [];
+                }
+
+                function saveCartToCookies(cart) {
+                    document.cookie = `cart=${encodeURIComponent(JSON.stringify(cart))}; path=/; max-age=31536000`; // 1-year expiry
+                }
+
     
                 //Function to create a product card
                 function createProductCard(product) {
@@ -202,6 +201,10 @@
                     // Display the modal
                     const modal = new bootstrap.Modal(document.getElementById('product-popup'), {});
                     modal.show();
+                }
+
+                function showPopup(item) {
+                    alert(`${item.name} has been added to the cart.`);
                 }
 
                 // Function to display products on the page

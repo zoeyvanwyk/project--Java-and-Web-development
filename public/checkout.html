@@ -12,10 +12,58 @@
 
         <!--javascript  -->
         <script src="js\checkout.js" defer></script>
+        <script src="js\common.js" defer></script>
 
 </head>
 
 <body>
+
+  <section class="header fixed-top">
+
+    <nav class="navbar">
+        <div class="container-fluid">
+
+            <!--Website name and logo-->
+            <div class="navbar-header"> 
+                <a class="navbar-brand" href="/">Crafters Corner</a>  
+            </div>
+            
+            <!--Nav bar-->
+            <div class="icon-bar">
+                <ul class="nav justify-content-end ">
+
+                    <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/products.html?category=1">Crochet Neeldes</a>
+                    </li>
+
+                    <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/products.html?category=4">Fabric</a>
+                    </li>
+
+                    <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/products.html?category=7">Kits</a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a class="nav-link" href="checkout.html">Checkout</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                      <a class="nav-link" id="loggedin" href="login-page.html">Log In</a>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" id="stock-link" href="stock.html" style="display: none;">Stock</a>
+                        <a class="dropdown-item" id="logout-button" href="#">Log Out</a>
+                      </div>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+  </section>
+
+
     <div class='container'>
         <div class='window'>
           <div class='order-info'>

@@ -283,7 +283,7 @@ app.delete('/api/stock/:id', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error during item deletion' });
     }
 });
-
+ 
 // API endpoint to handle checkout and send a success message
 app.post('/api/checkout', async (req, res) => {
     // You can keep the cartItems variable if you want to log or use it for other purposes
