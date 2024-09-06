@@ -24,7 +24,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Function to generate a session token
 const generateSessionToken = () => {
-    // return crypto.randomBytes(64).toString('hex');
     return crypto.randomBytes(16).toString('hex');
 };
 
@@ -45,7 +44,7 @@ const verifyToken = (req, res, next) => {
 };
 
 // Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to get data from the database
 app.get('/data', async (req, res) => {
@@ -66,14 +65,11 @@ app.post('/login', async (req, res) => {
         const result = await pool.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password]);
 
         if (result.rows.length > 0) {
-            // check if the user is an admin
             const isAdmin = result.rows[0].is_admin;
-            // Generate a session token
             const sessionToken = generateSessionToken();
-            // Set the token as a cookie
-            res.cookie('session_token', sessionToken, { httpOnly: true, secure: false }); // Set secure: true if using HTTPS
+            res.cookie('session_token', sessionToken, { httpOnly: true, secure: false });
             // Set the username as a cookie
-            res.cookie('username', username, { httpOnly: false, secure: false }); // Ensure secure: true if using HTTPS
+            res.cookie('username', username, { httpOnly: false, secure: false });
             // set the value of the admin value as an additional cookie to allow cross site access as an
             res.cookie('is_admin', isAdmin, { path: '/', domain: 'localhost' });
             res.status(200).json({ success: true });
@@ -103,7 +99,7 @@ app.post('/sign-up', async (req, res) => {
         // Generate a session token
         const sessionToken = generateSessionToken();
         // Set the token as a cookie
-        res.cookie('session_token', sessionToken, { httpOnly: true, secure: false }); // Set secure: true if using HTTPS
+        res.cookie('session_token', sessionToken, { httpOnly: true, secure: false });
         res.status(200).json({ message: 'User registered successfully' });
     } catch (err) {
         console.error(err);
@@ -144,7 +140,7 @@ app.get('/api/stock/:categoryId', async (req, res) => {
 
 
 app.get('/api/stock/:id', async (req, res) => {
-    const itemId = parseInt(req.params.id, 10); // Convert ID to integer
+    const itemId = parseInt(req.params.id, 10);
 
     if (isNaN(itemId)) {
         console.log('Invalid ID:', req.params.id);
@@ -162,7 +158,7 @@ app.get('/api/stock/:id', async (req, res) => {
             return res.status(404).json({ error: 'Item not found' });
         }
 
-        res.json(rows[0]); // Return only the first (and should be only) item found
+        res.json(rows[0]);
     } catch (error) {
         console.error('Error fetching item:', error);
         res.status(500).json({ error: 'Internal server error' });
@@ -201,14 +197,12 @@ app.post('/api/stock', async (req, res) => {
 app.patch('/api/stock/:item_id', async (req, res) => {
     const item_id = req.params.item_id;
     
-     // Ensure item_id is not 'undefined'
      if (!item_id || item_id === 'undefined') {
         return res.status(400).json({ error: 'Invalid item ID' });
     }
     console.log('Item ID:', item_id);
     const { name, categoryid, description, price, stock, material, colour, image } = req.body;
 
-    // Build the SET clause dynamically
     const updates = [];
     const values = [];
     let index = 1;
@@ -251,7 +245,8 @@ app.patch('/api/stock/:item_id', async (req, res) => {
         return res.status(400).json({ error: 'No fields to update' });
     }
 
-    values.push(item_id); // Add the ID to the end of the values array
+    // Add the ID to the end of the values array
+    values.push(item_id); 
 
     try {
         const result = await pool.query(
@@ -286,13 +281,11 @@ app.delete('/api/stock/:id', async (req, res) => {
  
 // API endpoint to handle checkout and send a success message
 app.post('/api/checkout', async (req, res) => {
-    // You can keep the cartItems variable if you want to log or use it for other purposes
     const { cartItems } = req.body;
 
     try {
         // You can log the cartItems for debugging or other purposes
-        console.log("Cart Items:", cartItems);
-
+        //console.log("Cart Items:", cartItems);
         // Send a success response without interacting with the database
         res.status(200).json({ message: 'Order placed successfully!' });
     } catch (error) {
@@ -332,8 +325,6 @@ app.patch('/api/cart/:item_id', async (req, res) => {
     const { quantity } = req.body;
 
     try {
-        // Instead of updating the quantity in the database, you can just send a success response
-        //         await pool.query('UPDATE cart SET quantity = $1 WHERE item_id = $2', [quantity, item_id]);
         res.status(200).json({ message: 'Quantity updated successfully' });
     } catch (error) {
         console.error('Error updating quantity:', error);

@@ -21,7 +21,7 @@
     
     <section class="header fixed-top">
 
-        <nav class="navbar">
+        <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
 
 
@@ -32,57 +32,56 @@
                 
                 <!--Nav bar-->
                 <div class="icon-bar">
-                    <ul class="nav justify-content-end ">
+                  <ul class="nav justify-content-end ">
 
-                        <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:3000/products.html?category=1">Crochet Neeldes</a>
-                        </li>
+                      <li class="nav-item">
+                      <a class="nav-link" href="http://localhost:3000/products.html?category=1">Crochet Neeldes</a>
+                      </li>
 
-                        <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:3000/products.html?category=4">Fabric</a>
-                        </li>
+                      <li class="nav-item">
+                      <a class="nav-link" href="http://localhost:3000/products.html?category=4">Fabric</a>
+                      </li>
 
-                        <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:3000/products.html?category=7">Kits</a>
-                        </li>
+                      <li class="nav-item">
+                      <a class="nav-link" href="http://localhost:3000/products.html?category=7">Kits</a>
+                      </li>
 
-                        <li class="nav-item">
-                          <a class="nav-link" href="checkout.html">Checkout</a>
-                        </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="checkout.html">Checkout</a>
+                      </li>
 
-                        <li class="nav-item dropdown">
-                          <a class="nav-link" id="loggedin" href="login-page.html">Log In</a>
-                          <div class="dropdown-menu">
-                            <a class="dropdown-item" id="stock-link" href="stock.html" style="display: none;">Stock</a>
-                            <a class="dropdown-item" id="logout-button" href="#">Log Out</a>
-                          </div>
-                        </li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link" id="loggedin" href="login-page.html">Log In</a>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" id="stock-link" href="stock.html" style="display: none;">Stock</a>
+                          <a class="dropdown-item" id="logout-button" href="#">Log Out</a>
+                        </div>
+                      </li>
 
-                    </ul>
-                </div>
+                  </ul>
+              </div>
 
-            </div>
+          </div>
         </nav>
     </section>
 
     <!--categories-->
     <section class="categories">
-        <h1>Categories</h1>
-
+        <h1 class="text-center">Categories</h1>
         <div class="container">
 
             <!--Row 1-->
-            <div class="row ">
+            <div class="row gy-3">
               <!-- The crochet card -->
-              <div class="col col-4 cat">
+              <div class="col cat col-12 col-md-6 col-lg-4">
                 <a href="products.html?category=1">
                   <h4>Crochet Needles</h4>
-                <img src="images\crochet.jpg" class="categoriesImagessmall" alt="Crochet">
+                <img src="images\crochet.jpg" class="categoriesImagessmall " alt="Crochet">
               </a>
               </div>
             
               <!-- The knitting card -->
-              <div class="col col-7 offset-md-1 cat">
+              <div class="col col-12 col-md-7 offset-md-1 cat">
                 <a href="products.html?category=2">
                 <h4>Knitting needles</h4>
                 <img src="images\Knitting.jpg" class="categoriesImageslarge" alt="Knitting needles">
@@ -92,10 +91,10 @@
             </div>
 
             <!--Row 2-->
-            <div class="row">
+            <div class="row gy-3">
 
               <!-- The Wool and Yarn card -->
-              <div class="col col-5 cat">
+              <div class="col col-12 col-md-5 cat">
                 <a href="products.html?category=3">
                 <h4>Wool & Yarn</h4>
                 <img src="images\wool and yarn.jpg" class="categoriesImagesMedium" alt="Wool and Yarn">
@@ -103,7 +102,7 @@
               </div>
 
               <!-- The fabric card -->
-              <div class="col offset-md-2 col-5 cat">
+              <div class="col offset-md-2 col-12 col-md-5 cat">
                 <a href="products.html?category=4">
                 <h4>Fabric</h4>
                 <img src="images\fabrics.jpg" class="categoriesImagesMedium" alt="fabrics">
@@ -113,10 +112,10 @@
             </div>
 
             <!--Row 3-->
-            <div class="row">
+            <div class="row gy-3">
 
                 <!-- The sewing tools card -->
-                <div class="col col-7 cat">
+                <div class="col col-12 col-md-7 cat">
                     <a href="products.html?category=5">
                     <h4>Sewing Tools</h4>
                     <img src="images\sewingTools.jpg" class="categoriesImageslarge" alt="sewingTools">
@@ -124,7 +123,7 @@
                   </div>
 
                 <!-- The  Other card -->
-                <div class="col offset-md-1 col-4 cat">
+                <div class="col col-12 offset-md-1 col-md-4 cat">
                     <a href="products.html?category=6">
                     <h4>Other</h4>
                     <img src="images\Other.jpg" class="categoriesImagessmall" alt="Other">
@@ -138,13 +137,13 @@
     </section>
 
     <!--footers-->
-    <section class="footer">
+    <section class="footer mt-5">
 
         <div class="container bottom-info">
-            <div class="row">
+            <div class="row gy-4">
 
               <!-- The link to all Categories on the site -->
-              <div class="col col-3 bottom-cards">
+              <div class="col col-12 col-md-3 bottom-cards">
                 <h4>All Categories</h4>
                 <ul>
                   <li><a href="http://localhost:3000/products.html?category=1">Crochet Needles</a></li>
@@ -158,13 +157,13 @@
               </div>
 
               <!-- The About Us Section -->
-              <div class="col col-4 offset-1 bottom-cards">
+              <div class="col col-12 col-md-4 offset-md-1 bottom-cards">
                 <h4>About Us</h4>
                 <p>We are an independent store that is trying to have a little bit of everything related to different craft types. The plan is to slowly expand our stock, and if there is something that you really would like us to add, dont be shy to email us and we will respond as soon as possible with whether we would be able to do this or not.</p>
               </div>
 
               <!-- The Contact section -->
-              <div class="col col-3 offset-1 bottom-cards">
+              <div class="col  col-12 col-md-3 offset-md-1 bottom-cards">
                 <h4>Follow Us</h4>
                 <ul>
                   <li><a href="/">Instagram</a></li>
@@ -188,8 +187,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
   
-  
-  <script src="js/main.js"></script>
 </body>
 
 </html>

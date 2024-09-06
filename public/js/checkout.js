@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         document.cookie = `cart=${encodeURIComponent(JSON.stringify(cartItems))}; path=/`;
     }
 
-    // Function to clear the cart cookie (explicitly deletes the cookie)
+    // Function to clear the cart cookie
     function clearCartCookie() {
         document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
     }
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }).join('');
 
         document.getElementById('order-total').textContent = `R${totalCost}.00`;
-        document.getElementById('delivery-cost').textContent = `R0.00`; // Update delivery cost if needed
+        document.getElementById('delivery-cost').textContent = `R0.00`; 
     }
 
     displayCartItems();

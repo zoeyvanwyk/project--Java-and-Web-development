@@ -18,10 +18,9 @@ loginButton.addEventListener("click", async (e) => {
         const result = await response.json();
 
         if (result.success) {
-            // alert("You have successfully logged in.");
             document.cookie = `session_token=${result.sessionToken}; path=/`;
             document.cookie = `username=${username}; path=/`;
-            window.location.href = '/'; // to redirect successful logins back to the main site
+            window.location.href = '/'; 
         } else {
             loginErrorMsg.style.opacity = 1;
         }

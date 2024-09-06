@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
             image: document.getElementById('edit-image').value
         };
     
-        console.log('Editing item:', itemId); // Debugging line
-        console.log('Data:', data); // Debugging line
+        console.log('Editing item:', itemId); 
+        console.log('Data:', data); 
     
         try {
             await editItem(itemId, data);
