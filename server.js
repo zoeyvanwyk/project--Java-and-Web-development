@@ -21,12 +21,10 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 // Function to generate a session token
 const generateSessionToken = () => {
     return crypto.randomBytes(16).toString('hex');
 };
-
 
 // Middleware to verify the session token
 const verifyToken = (req, res, next) => {
@@ -42,9 +40,6 @@ const verifyToken = (req, res, next) => {
         res.status(401).json({ error: 'Unauthorized' });
     }
 };
-
-// Serve static files from the "public" directory
-//app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to get data from the database
 app.get('/data', async (req, res) => {
@@ -126,7 +121,6 @@ app.get('/api/category/:id', async (req, res) => {
     }
     });
 
-
 app.get('/api/stock/:categoryId', async (req, res) => {
     const { categoryId } = req.params;
     try {
@@ -137,7 +131,6 @@ app.get('/api/stock/:categoryId', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-
 
 app.get('/api/stock/:id', async (req, res) => {
     const itemId = parseInt(req.params.id, 10);
@@ -164,7 +157,6 @@ app.get('/api/stock/:id', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
 
 // API endpoint to fetch all stock items
 app.get('/api/stock', async (req, res) => {
@@ -284,9 +276,6 @@ app.post('/api/checkout', async (req, res) => {
     const { cartItems } = req.body;
 
     try {
-        // You can log the cartItems for debugging or other purposes
-        //console.log("Cart Items:", cartItems);
-        // Send a success response without interacting with the database
         res.status(200).json({ message: 'Order placed successfully!' });
     } catch (error) {
         console.error('Error during checkout:', error);
@@ -318,7 +307,6 @@ app.post('/api/calculate-total', async (req, res) => {
     }
 });
 
-
 // API endpoint to update the quantity of an item in the cart 
 app.patch('/api/cart/:item_id', async (req, res) => {
     const item_id = req.params.item_id;
@@ -332,7 +320,6 @@ app.patch('/api/cart/:item_id', async (req, res) => {
     }
 });
 
-
 // API endpoint to delete an item from the cart
 app.delete('/api/cart/:item_id', async (req, res) => {
     const item_id = req.params.item_id;
@@ -345,7 +332,6 @@ app.delete('/api/cart/:item_id', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error during item removal' });
     }
 });
-
 
 // Handle the root URL
 app.get('/', (req, res) => {
