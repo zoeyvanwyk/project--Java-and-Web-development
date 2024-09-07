@@ -19,7 +19,6 @@
 <body>
 
   <section class="header fixed-top">
-
     <nav class="navbar">
         <div class="container-fluid">
 
@@ -64,59 +63,65 @@
   </section>
 
 
-    <div class='container'>
-        <div class='window'>
-          <div class='order-info'>
-            <div class='order-info-content'>
-              <h2>Order Summary</h2>
-              <div class='line'></div>
+  <div class='container mt-5'>
+      <div class='window row'>
+        <div class='order-info col-lg-8'>
+          <div class='order-info-content'>
+            <h2>Order Summary</h2>
+            <div class='line'></div>
 
-              <!-- Dynamic order table placeholder -->
-              <div id="order-summary-container" class="checkout-container">
-                <!-- Items will be inserted here dynamically -->
-              </div>
-
-              <div class='line'></div>
-
-              <div id="order-total">Total: R0.00</div>
-              <div id="delivery-cost">Delivery: R0.00</div>
-      </div>
-      </div>
-              <div class='credit-info'>
-                <div class='credit-info-content'>
-                  <table class='half-input-table'>
-                    <tr><td>Please select your card: </td><td><div class='dropdown' id='card-dropdown'><div class='dropdown-btn' id='current-card'>Visa</div>
-                      <div class='dropdown-select'>
-                      <ul>
-                        <li>Master Card</li>
-                        <li>Google Pay</li>
-                        </ul></div>
-                      </div>
-                     </td></tr>
-                  </table>
-                  <img src='https://dl.dropboxusercontent.com/s/ubamyu6mzov5c80/visa_logo%20%281%29.png' height='80' class='credit-card-image' id='credit-card-image'></img>
-                  Card Number
-                  <input class='input-field'></input>
-                  Card Holder
-                  <input class='input-field'></input>
-                  <table class='half-input-table'>
-                    <tr>
-                      <td> Expires
-                        <input class='input-field'></input>
-                      </td>
-                      <td>CVV
-                        <input class='input-field'></input>
-                      </td>
-                    </tr>
-                  </table>
-                  <!-- <button class='pay-btn'>Checkout</button> -->
-                  <button id="purchase-button">Place Order</button>
-      
-                </div>
-      
-              </div>
+            <!-- Dynamic order table placeholder -->
+            <div id="order-summary-container" class="checkout-container">
+              <!-- Items will be inserted here dynamically -->
             </div>
-      </div>
+
+            <div class='line'></div>
+
+            <div class="total" id="order-total">Total: R0.00</div>
+            <div class="total" id="delivery-cost">Delivery: R150.00</div>
+          </div>
+        </div>
+            <div class='credit-info'>
+              <div class='credit-info-content'>
+                <table class='half-input-table'>
+                  <tr><td>Please select your card: </td><td><div class='dropdown' id='card-dropdown'><div class='dropdown-btn' id='current-card'>Visa</div>
+                    <div class='dropdown-select'>
+                    <ul>
+                      <li>Master Card</li>
+                      <li>Google Pay</li>
+                      </ul></div>
+                    </div>
+                    </td></tr>
+                </table>
+                <img src='https://dl.dropboxusercontent.com/s/ubamyu6mzov5c80/visa_logo%20%281%29.png' height='80' class='credit-card-image' id='credit-card-image'></img>
+                Card Number
+                <input class='input-field'></input>
+                Card Holder
+                <input class='input-field'></input>
+                <table class='half-input-table'>
+                  <tr>
+                    <td> Expires
+                      <input class='input-field'></input>
+                    </td>
+                    <td>CVV
+                      <input class='input-field'></input>
+                    </td>
+                  </tr>
+                </table>
+                <button id="purchase-button">Place Order</button>
+    
+              </div>
+    
+            </div>
+          </div>
+  </div>
+
+  <!--footers-->
+  <section class="footer mt-5">
+    <div class="bottom">
+        <p>© Zoeyvanwyk</p>
+    </div>
+  </section>
 
 </body>
 </html>

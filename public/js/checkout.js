@@ -47,12 +47,16 @@ document.addEventListener("DOMContentLoaded", async function() {
 
         let totalCost = 0;
         orderSummaryContainer.innerHTML = cartItems.map((item, index) => {
+            if (isNaN(item.quantity) || item.quantity <= 0) {
+                item.quantity = 1;
+            }
             totalCost += item.price * item.quantity;
             return createCartItemTemplate(item, index);
         }).join('');
 
-        document.getElementById('order-total').textContent = `R${totalCost}.00`;
-        document.getElementById('delivery-cost').textContent = `R0.00`; 
+        const shippingCost = totalCost * 0.10;
+        document.getElementById('order-total').textContent = `Total: R${totalCost}.00`;
+        document.getElementById('delivery-cost').textContent = `Delivery: R${shippingCost.toFixed(2)}`; 
     }
 
     displayCartItems();
@@ -62,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (event.target.classList.contains('quantity-input')) {
             const cartItems = getCartItemsFromCookies();
             const index = event.target.getAttribute('data-index');
-            const newQuantity = parseInt(event.target.value);
+            const newQuantity = parseInt(event.target.value) || 1;
             cartItems[index].quantity = newQuantity;
             updateCartCookie(cartItems);
             await displayCartItems();

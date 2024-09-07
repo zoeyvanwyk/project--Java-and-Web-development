@@ -13,50 +13,94 @@
     <body>
 
 
-        <!-- Header section -->
-        <header class="header">
-            <div class="navbar-header"> 
-                <a class="navbar-brand" href="/">Crafters Corner</a>  
-            </div>
-            <h1 id="category-title">Loading...</h1>
-        </header>
-        
-        <!-- The rest of products page content -->
-        <div class="container mt-5">
-            <div class="row" id="products-container">
-                <!-- Product cards will be dynamically inserted here -->
-            </div>
+    <!-- Header section -->
+    <header class="header">
+        <div class="navbar-header"> 
+            <a class="navbar-brand" href="/">Crafters Corner</a>  
         </div>
+        <h1 id="category-title">Loading...</h1>
+    </header>
+    
+    <!-- Product Cards -->
+    <div class="container mt-5">
+        <div class="row justify-content-center" id="products-container">
+            <!-- Product cards dynamically inserted here -->
+        </div>
+    </div>
 
 
-        <!-- Popup Card HTML Structure -->
-        <div id="product-popup" class="modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="popup-product-name">Product Name</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <img id="popup-product-image" src="" alt="Product Image" class="img-fluid">
-                            </div>
-                            <div class="col-md-6">
-                                <p id="popup-product-price">Price: R0.00</p>
-                                <p id="popup-product-stock">Stock: 0</p>
-                                <p id="popup-product-description">Description</p>
-                                <p id="popup-product-material">Material</p>
-                                <p id="popup-product-colour">Colour</p>
-                                <button class="btn btn-success btn-sm add-to-cart-button">Add to Cart</button>
-                            </div>
+    <!-- Popup Card HTML Structure -->
+    <div id="product-popup" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="popup-product-name">Product Name</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img id="popup-product-image" src="" alt="Product Image" class="img-fluid">
+                        </div>
+                        <div class="col-md-6">
+                            <p id="popup-product-price">Price: R0.00</p>
+                            <p id="popup-product-stock">Stock: 0</p>
+                            <p id="popup-product-description">Description</p>
+                            <p id="popup-product-material">Material</p>
+                            <p id="popup-product-colour">Colour</p>
+                            <button class="btn btn-success btn-sm add-to-cart-button">Add to Cart</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!--footers-->
+    <section class="footer mt-5">
+
+        <div class="container bottom-info">
+            <div class="row gy-4">
+
+              <div class="col col-12 col-md-3 bottom-cards ">
+                <h4>All Categories</h4>
+                <ul>
+                    <li><a href="http://localhost:3000/products.html?category=1">Crochet Needles</a></li>
+                    <li><a href="http://localhost:3000/products.html?category=2">Knitting Needles</a></li>
+                    <li><a href="http://localhost:3000/products.html?category=3">Wool & Yarn</a></li>
+                    <li><a href="http://localhost:3000/products.html?category=4">Fabric</a></li>
+                    <li><a href="http://localhost:3000/products.html?category=5">Tea</a></li>
+                    <li><a href="http://localhost:3000/products.html?category=6">Sewing Tools</a></li>
+                    <li><a href="http://localhost:3000/products.html?category=7">Kits</a></li>
+                </ul>
+              </div>
+
+              <div class="col col-12 col-md-4 offset-md-1 bottom-cards">
+                <h4>Info</h4>
+                <p>We are an independent store that is trying to have a little bit of everything related to different craft types. The plan is to slowly expand our stock, and if there is something that you really would like us to add, dont be shy to email us and we will respond as soon as possible with whether we would be able to do this or not.</p>
+              </div>
+
+              <div class="col  col-12 col-md-3 offset-md-1 bottom-cards">
+                <h4>Follow Us</h4>
+                <ul>
+                    <li><a href="/">Instagram</a></li>
+                    <li><a href="/">Email</a></li>
+                    <li><a href="/">Facebook</a></li>
+                    <li><a href="/">Whatsapp</a></li>
+                  </ul>
+              </div>
+            
+            </div>
+        </div>
+        <div class="bottom">
+            <p>© Zoeyvanwyk</p>
+
+        </div>
+
+
+    </section>
 
 
          <!-- Include Bootstrap JS and Popper.js -->
@@ -123,7 +167,6 @@
                         
                     } else {
                         cart.push(item);
-                        // Save the updated cart back to the cookies
                         saveCartToCookies(cart);
                         showPopup(item);
                     }
@@ -142,7 +185,7 @@
                 //Function to create a product card
                 function createProductCard(product) {
                     return `
-                        <div class="col-md-3 mb-3">
+                        <div class="col-sm-12 col-md-5 col-lg-3 mb-3">
                             <div class="card">
                                 <!-- Product image -->
                                 <img class="images card-img-top" src="${product.image}" alt="${product.name}">
@@ -220,7 +263,6 @@
                     const productContainer = document.getElementById("products-container");
                     productContainer.innerHTML = products.map(createProductCard).join('');
 
-                    // Add event listeners to "View options" buttons
                     document.querySelectorAll('.btn-outline-dark').forEach(button => {
                         button.addEventListener('click', handleViewOptionsClick);
                     });

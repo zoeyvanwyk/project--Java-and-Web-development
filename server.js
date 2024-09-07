@@ -32,7 +32,6 @@ const verifyToken = (req, res, next) => {
     if (!token) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
-    // Placeholder for token validation logic
     const isValid = true;
     if (isValid) {
         next();
@@ -63,9 +62,7 @@ app.post('/login', async (req, res) => {
             const isAdmin = result.rows[0].is_admin;
             const sessionToken = generateSessionToken();
             res.cookie('session_token', sessionToken, { httpOnly: true, secure: false });
-            // Set the username as a cookie
             res.cookie('username', username, { httpOnly: false, secure: false });
-            // set the value of the admin value as an additional cookie to allow cross site access as an
             res.cookie('is_admin', isAdmin, { path: '/', domain: 'localhost' });
             res.status(200).json({ success: true });
 
@@ -101,7 +98,6 @@ app.post('/sign-up', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
 
 // API endpoint to get category name by ID
 app.get('/api/category/:id', async (req, res) => {

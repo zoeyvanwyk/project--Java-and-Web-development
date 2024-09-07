@@ -1,3 +1,4 @@
+/********* Elements *********/
 html {
     height: 100%;
   }
@@ -12,6 +13,7 @@ body {
     background-image: url('images/background2.jpg');
   }
   
+/********* IDs *********/
   #main-holder {
     width: 52%;
     height: 52%;
@@ -55,19 +57,6 @@ body {
     align-items: center;
   }
   
-  .login-form-field::placeholder {
-    color: #3a3a3a;
-  }
-  
-  .login-form-field {
-    border: none;
-    border-bottom: 1px solid #3a3a3a;
-    margin-bottom: 10px;
-    border-radius: 3px;
-    outline: none;
-    padding: 0px 0px 5px 5px;
-  }
-  
   #login-form-submit {
     width: 100%;
     padding: 7px;
@@ -79,7 +68,6 @@ body {
     cursor: pointer;
     outline: none;
   }
-
 
   #signup-error-msg-holder {
     width: 100%;
@@ -101,3 +89,33 @@ body {
     background-color: #e58f8f;
     opacity: 0;
   }
+
+/********* Classes *********/
+.login-form-field::placeholder {
+  color: #3a3a3a;
+}
+  
+.login-form-field {
+  border: none;
+  border-bottom: 1px solid #3a3a3a;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  outline: none;
+  padding: 0px 0px 5px 5px;
+}
+  
+/* Footer */
+
+.footer{
+  width: 100%;
+  background-color: #F4DADA ;
+  margin-top: 4rem;
+  border-top: 5px solid black;
+}
+
+.bottom{
+  background-color: #DBE9B7;
+  text-align: center;
+  padding-bottom: 25px;
+  border-top: 3px solid black;
+}
