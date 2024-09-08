@@ -5,7 +5,6 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 
 
@@ -45,6 +44,7 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#database">Database</a></li>
       </ul>
     </li>
     <li><a href="#features">Features</a></li>
@@ -111,6 +111,14 @@ _Below is an example of how you can instruct your audience on installing and set
    ```sh
    http://localhost:3000/
    ```
+   
+### Database
+
+- Install pgAdmin4
+- Create new database called: CraftersCorner (capitals matter)
+- right click on database and open Query Tool
+- Paste the content of database.txt
+- Execute query
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -119,7 +127,11 @@ _Below is an example of how you can instruct your audience on installing and set
 <!-- USAGE EXAMPLES -->
 ## Features
 
-
+- a login and signup page for new and existing users that keeps them logged in
+- a home page that gives access to other pages and other social media pages
+- product pages that are made dynamically using the database ensuring that it is easily scalable
+- A checkout page that allows users to edit the amount of each item they want and remove items from their cart
+- Three options for different payment methods
 
 
 
