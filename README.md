@@ -12,7 +12,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="public/images/crochet.jpg" alt="Logo" width="160" height="auto">
   </a>
 
   <h3 align="center">Project: Java and Web Development</h3>
@@ -23,7 +23,7 @@
     <a href="https://github.com/zoeyvanwyk/project--Java-and-Web-development/tree/main"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <!-- <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a> -->
+    <a href="https://github.com/zoeyvanwyk/project--Java-and-Web-development/blob/main/docs_phase3/screencast%20final.mp4">View Demo</a>
   </p>
 </div>
 
@@ -58,7 +58,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![Product Screen Shot][product-screenshot]
 
 The purpose of the website is to be a site where people with different types of crafts can come to and look for things they need. The purpose is to be an inviting space where different needle and fabric crafts can come and  get the things that they need. The coding behind the site populates the different craft things based on their category type.
 
@@ -176,4 +176,4 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [issues-url]: https://github.com/zoeyvanwyk/project--Java-and-Web-development/issues
 [license-shield]: https://img.shields.io/github/license/zoeyvanwyk/project--Java-and-Web-development.svg?style=for-the-badge
 [license-url]: https://github.com/zoeyvanwyk/project--Java-and-Web-development/blob/master/LICENSE.txt
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: public/images/DemoScreenshot.png
