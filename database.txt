@@ -1,0 +1,354 @@
+ALTER DATABASE "CraftersCorner" OWNER TO postgres;
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 218 (class 1259 OID 24924)
+-- Name: category; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.category (
+    categoryid integer NOT NULL,
+    categoryname character varying(50) NOT NULL,
+    description character varying(500) NOT NULL
+);
+
+
+ALTER TABLE public.category OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 24923)
+-- Name: category_categoryid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.category_categoryid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.category_categoryid_seq OWNER TO postgres;
+
+--
+-- TOC entry 4869 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: category_categoryid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.category_categoryid_seq OWNED BY public.category.categoryid;
+
+
+--
+-- TOC entry 220 (class 1259 OID 24935)
+-- Name: stock; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.stock (
+    item_id integer NOT NULL,
+    name character varying(60) NOT NULL,
+    categoryid integer NOT NULL,
+    description character varying(500) NOT NULL,
+    price integer NOT NULL,
+    stock integer NOT NULL,
+    material character varying(50),
+    colour character varying(20),
+    image character varying(300)
+);
+
+
+ALTER TABLE public.stock OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 24934)
+-- Name: stock_item_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.stock_item_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.stock_item_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4870 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: stock_item_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.stock_item_id_seq OWNED BY public.stock.item_id;
+
+
+--
+-- TOC entry 216 (class 1259 OID 24913)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    userid integer NOT NULL,
+    username character varying(45) NOT NULL,
+    password character varying(45) NOT NULL,
+    email character varying(50) NOT NULL,
+    is_admin boolean DEFAULT false
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 24912)
+-- Name: users_userid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_userid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.users_userid_seq OWNER TO postgres;
+
+--
+-- TOC entry 4871 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: users_userid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_userid_seq OWNED BY public.users.userid;
+
+
+--
+-- TOC entry 4697 (class 2604 OID 24927)
+-- Name: category categoryid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.category ALTER COLUMN categoryid SET DEFAULT nextval('public.category_categoryid_seq'::regclass);
+
+
+--
+-- TOC entry 4698 (class 2604 OID 24951)
+-- Name: stock item_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stock ALTER COLUMN item_id SET DEFAULT nextval('public.stock_item_id_seq'::regclass);
+
+
+--
+-- TOC entry 4695 (class 2604 OID 24916)
+-- Name: users userid; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN userid SET DEFAULT nextval('public.users_userid_seq'::regclass);
+
+
+--
+-- TOC entry 4860 (class 0 OID 24924)
+-- Dependencies: 218
+-- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.category (categoryid, categoryname, description) VALUES (1, 'CrochetNeedles', 'Different styles and sizes of needles and hooks used for crocheting as well as the accessories that go with them');
+INSERT INTO public.category (categoryid, categoryname, description) VALUES (2, 'KnittingNeedles', 'Different styles and sizes of needles and hooks used for Knitting as well as the accessories that go with them');
+INSERT INTO public.category (categoryid, categoryname, description) VALUES (3, 'Wool&Yarn', 'Different wools and yarns in different sizes, materials and colours');
+INSERT INTO public.category (categoryid, categoryname, description) VALUES (4, 'Fabric', 'Different fabric in different sizes, materials, colours and patterns');
+INSERT INTO public.category (categoryid, categoryname, description) VALUES (5, 'SewingTools', 'Different tools and equipment used for sewing');
+INSERT INTO public.category (categoryid, categoryname, description) VALUES (6, 'Patterns', 'Different patterns for different pieces of clothing and items in different manners such as sewing and crocheting and knitting');
+INSERT INTO public.category (categoryid, categoryname, description) VALUES (7, 'Kits', 'Kits containing all/some tools for a specific task or hobby');
+
+
+--
+-- TOC entry 4862 (class 0 OID 24935)
+-- Dependencies: 220
+-- Data for Name: stock; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (1, '4mm Crochet Hook- Aluminium', 1, 'Aluminium anodised or grey crochet hook. +-15cm length', 16, 20, 'Aluminium', 'Purple', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2019/12/image-removebg-preview-2023-05-20T110440.163.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (2, '10mm Crochet Hook -Plastic', 1, 'plastic Crochet Hook', 20, 45, 'Plastic', 'Blue', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2019/12/image-removebg-preview-2023-05-20T112944.029.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (3, '0.5mm Crochet Hook- Stainless Steel', 1, 'Stainless Steel Crochet Hooks', 15, 2, 'Stainless Steel', 'Steel silver', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2022/05/image-removebg-preview-2023-05-20T113505.743.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (4, '2mm Crochet Hooks- Soft Grip Aluminum', 1, 'Soft rubber TPR Handle with an aluminium head crochet hook.', 18, 104, 'Soft Grip Aluminium', 'Multicolour', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2019/12/image-removebg-preview-2023-05-20T104818.488.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (5, '3.25mm Crochet Hook- Aluminium', 1, 'Aluminium anodised or grey crochet hook. +-15cm length', 14, 10, 'Aluminium', 'Purple', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2019/12/image-removebg-preview-2023-05-20T110440.163.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (6, '25mm Crochet Hook -Plastic', 1, 'plastic Crochet Hook', 50, 2, 'Plastic', 'Blue', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2019/12/image-removebg-preview-2023-05-20T112944.029.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (7, '5mm Elle Knitting Needles Aluminium', 2, 'Knitting Needles Aluminium – 35cm', 34, 35, 'Aluminium', 'Steel silver', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2019/11/image-removebg-preview-2023-07-02T221422.443.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (8, '7mm Kiddies Knitting Needles – Plastic', 2, 'Kiddies knitting needles - 25cm', 18, 75, 'Plastic', 'Pink', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2019/11/image-removebg-preview-2023-05-22T231103.441.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (9, '18mm Knitting Needles – Plastic – Big', 2, 'Kiddies Knitting needles BIG', 35, 7, 'Plastic', 'White', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2019/11/image-removebg-preview-2023-05-22T233711.227.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (10, '8mm Knitting Needles Bamboo', 2, 'Knitting Needles Bamboo – 34cm', 20, 43, 'Bamboo', 'Wooden', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2019/11/admin-ajax-removebg-preview-1.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (11, '2.5mm Sock Needles – Aluminium', 2, 'Single Pack includes 5 needles', 22, 98, 'Aluminium', 'Steel silver', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2022/03/image-removebg-preview-2023-05-21T005018.222.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (12, '4mm Knitting Needles – Plastic', 2, 'Knitting Needles – Plastic – 35cm', 18, 35, 'Plastic', 'Purple', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2019/11/Plastic-KN-768x1024.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (13, '100% Natural Cotton Twine', 3, '100% Natural Cotton Twine, Approx 2mm, Approx. 180g Ball', 40, 180, 'Cotton', 'White', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2023/02/100-Twine-1010x1024.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (14, '50/50 Chunky', 3, '50/50 Chunky ,50% cotton 50% Acrylic 50 grams - 75 meters', 27, 500, '50% Cotton, 50% Acrylic', 'Salmon Pink', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2024/06/216-1024x683.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (15, 'Kismet 67 Blankets Cascades', 3, 'Kismet 67 Blankets Cascades, ball size 300G, mererage 180M, Chunky', 135, 1000, '100% Polyester', 'Sea Foam', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2024/06/204-Sea-Foam-1024x683.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (16, '67 Blankets DK – Print', 3, '67 Blankets by kismet yarns has a soft feel with the most delectable pallet of colours for those amazing and colourful blanket projects both for charity and personal use.', 120, 20, '100% Acrylic', 'Candy Crush', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2021/09/106-Ice-Cream.jpg.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (17, 'Autumn Chunky', 3, 'This gorgeous squishable chunky roving yarn is perfect for making cozy garments and accessories. Available in rich variegated shades this is the perfect yarn for keeping warm in the autumn months.', 85, 135, '80% Acrylic 20% Wool', 'Log Fire', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2023/05/Autumn-Chunky_Ball-Image-LogFire-1024x712.png.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (18, 'Babykins 4Ply', 3, 'Approx. 160m, 50g Ball', 22, 20, '100% Acrylic', 'Cherry Boo', 'https://woolwarehouse.co.za/wp-content/webp-express/webp-images/uploads/2019/11/babykins-650x1024.jpg.webp');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (19, 'Plain Nylon Lycra (194GSM) - Various Colours - 150cm', 4, 'Plain Nylon Lycra - Various Colours - 150cmSold per meter or per roll. Weight: 194GSM Width: 150cm Roll Length: 40m', 120, 60, 'Nylon Lycra', 'Chocolate Brown', 'https://homehypercity.co.za/cdn/shop/products/880b_1024x1024@2x.jpg?v=1667284801');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (20, 'Plain Mini Matt - Various Colours - 150cm', 4, 'Plain Mini Matt - Various Colours - 150cm,Sold per meter or per roll.Width: 150cm,Roll Length: 50m', 20, 12, 'Mini Matt', 'Dark Purple', 'https://homehypercity.co.za/cdn/shop/files/172_1024x1024@2x.png?v=1702536666');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (21, 'Oxford Nylon - Assorted Colours - 150CM', 4, 'Oxford Nylon ,Sold per meter or per roll.Width: 150cm,Roll Length: 50m', 35, 150, 'Oxford Nylon', 'Royal Blue', 'https://homehypercity.co.za/cdn/shop/files/OCIROY_1_1024x1024@2x.webp?v=1719317743');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (22, 'Spangled Nylon Lycra - Assorted Designs - 150CM', 4, 'Rock the dance floor with this dazzling spangled nylon lycra fabric! Choose from the eye-catching designs  pencil dot, broken glass theyll definitely make a statement. Whether youre a ballerina or just want a swimsuit that stands out, this fabric delivers! Make em spin with your style.', 230, 9, 'Nylon Lycra', 'Pink', 'https://homehypercity.co.za/cdn/shop/files/114_045b6bcd-4c69-45c8-8099-ba3ef0771723_1024x1024@2x.png?v=1686560298');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (23, 'Fasco Falla - Assorted Colours - 90CM', 4, 'Fasco Falla - Assorted Colours, Sold per meter or per roll. Width: 90cm and 115cm, Roll Length: 30m', 35, 100, 'Fasco Falla', 'Lilac', 'https://homehypercity.co.za/cdn/shop/files/15_3_1024x1024@2x.jpg?v=1716300455');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (24, 'Printed Polycotton with Lurex - Various Colors - 150CM', 4, 'Add a touch of elegance and versatility to your wardrobe with our Printed Polycotton with Lurex! Featuring a beautiful print and a subtle lurex shimmer, this fabric is perfect for creating lightweight and breathable garments. Make a statement with a unique piece in various colors!', 25, 20, 'Polycotton', 'Printed Flowers', 'https://homehypercity.co.za/cdn/shop/files/2_7_1024x1024@2x.jpg?v=1706689201');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (25, 'BIAS TAPE MAKER', 5, 'If you have ever tried to fold and press bias tape, you know how frustrating it can be. With the bias tape maker, you can make your own bias binding tape – quickly and with no hassles. In addition, it saves you a couple of Rand!', 68, 37, 'Plastic', 'Beige', 'https://creativenotions.co.za/files/Sew-Easy-Bias-Tape-Maker-12mm-1.png');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (26, 'ELASTIC THREADER – WEAR ELASTIC BAND TOOL', 5, 'This handy Elastic Threader tool is specifically made to easily thread elastic or ribbon through casings without twisting. Buy online from Creative Notions.', 23, 115, 'Plastic', '', 'https://creativenotions.co.za/files/Elastic-Band-tool.jpg');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (27, 'SEAM RIPPER', 5, 'The versatile seam ripper is a must have for every seamstress to unpick stitches and open button holes. It has a fine sharp steel blade & safety ball.', 54, 2, '', '', 'https://creativenotions.co.za/files/Seam-Ripper-1.jpg');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (28, 'BUTTONHOLE CUTTER', 5, 'Buy this Buttonhole cutter online from Creative Notions. This handy sewing tool makes opening buttonholes faster and easier.', 56, 76, '', '', 'https://creativenotions.co.za/files/Button-Hole-Cutter-Sew-Easy.jpg');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (29, 'SEWING WEIGHTS', 5, 'The sewing fabric weights is a wonderful sewing aid & holds the fabric steady while you cut and trace. The design features pins which hold down the fabric. Two in a pack.', 109, 50, '', '', 'https://creativenotions.co.za/files/Sew-Easy-Fabric-Weights-810x810.png');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (30, 'MAGNETIC SEAM GUIDE', 5, 'The magnetic seam guide is a handy little tool for beginners & advanced sewers. It gives you that extra support to sew in a straight line or to stitch a circle line track. Now you can stitch perfect even seams in straight lines & curves', 48, 114, '', '', 'https://creativenotions.co.za/files/Magnetic-Sewing-Guide-min-810x810.png');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (31, 'MAXI DRESS PATTERN (P014)', 6, 'This maxi dress pattern is for sizes from XS – XXL.', 89, 10, '', '', 'https://creativenotions.co.za/files/14-Maxi-Dress-Pattern.png');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (32, 'TANK TOP WITH LADIES PANTS PATTERN (P007)', 6, 'This tank top with ladies pants sewing pattern is for sizes:', 89, 20, '', '', 'https://creativenotions.co.za/files/7-Tank-Top-with-Ladies-Pants-Pattern.png');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (33, 'LADIES PULL-UP PANTS PATTERN (P029)', 6, 'This ladies pull-up pants sewing pattern is for sizes:', 89, 30, '', '', 'https://creativenotions.co.za/files/Eazy-Stitch-P029-Ladies-Pull-up-Pants.png');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (34, 'LADIES ACTIVE WEAR PANTS PATTERN (P021)', 6, 'This ladies active wear pants pattern is designed for sizes from S, M, L, and XL.', 89, 4, '', '', 'https://creativenotions.co.za/files/21.png');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (35, 'SEMI-FITTED LADIES TOP PATTERN (P018)', 6, 'This semi-fitted ladies top pattern is semi designed for sizes from XS, S, M, L, and XL.', 89, 7, '', '', 'https://creativenotions.co.za/files/cache//18-min/3721268493.png');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (36, 'UNISEX TWEEN & TEEN SWEATER SEWING PATTERN (P005)', 6, 'This unisex tween & teen sweater sewing pattern is for ages:', 89, 25, '', '', 'https://creativenotions.co.za/files/5-Unisex-Tween-Teen-Sweater-Sewing-Pattern.png');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (37, 'Felting Craft Kits- Little Gnome People', 7, 'Have fun felting these cute little felted creatures. The kits include all the fibre and accessories required to complete the project – just add your own tools e.g., needle, thread, scissors, glue etc.', 60, 50, '', '', 'https://naturalyarns.co.za/wp-content/uploads/2024/06/felt-little-gnome-people.jpg');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (38, 'Tulip | Embroidery Kit Sashiko Hungary Rose Medallion', 7, 'Sashiko stitching is a traditional embroidery style from Japan. Originally used for repairs and reinforcements, in the present day it is more often employed for its decorative purpose.', 275, 10, '', '', 'https://naturalyarns.co.za/wp-content/uploads/2024/06/tulip-embroidery-Hungary-A1.jpg');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (39, 'Tulip | Embroidery Kit Sashiko Russia Galloping Horses', 7, 'Sashiko stitching is a traditional embroidery style from Japan. Originally used for repairs and reinforcements, in the present day it is more often employed for its decorative purpose.', 275, 58, '', '', 'https://naturalyarns.co.za/wp-content/uploads/2024/06/Sashiko-Tulip-Russia-Galloping-Horses.jpg');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (40, '“Learn To Spin Yarn” Spindle Kit | Stellar Fibreworks', 7, 'We have put together a ‘learn to spin’ kit to help get you started on your spinning journey!', 255, 105, '', '', 'https://naturalyarns.co.za/wp-content/uploads/2024/06/spindlekit_new.jpg');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (41, 'Flower Power Tea Cosy by Jenny Whitehead', 7, 'A modern makeover of the classic tea cosy, this quick knit makes a perfect gift. The two-tone body is capped with a posy of bold flowers that take full advantage of the firm hold that you get from 100% natural wool. The pattern offers some challenges for intermediate level knitters: colour weaving and a ruche technique to create thickness in the body, short rows and grafting for a seamless circumference of the flower petals.', 300, 2, '', '', 'https://naturalyarns.co.za/wp-content/uploads/2024/06/PAIMG_5974-1.jpg');
+INSERT INTO public.stock (item_id, name, categoryid, description, price, stock, material, colour, image) VALUES (42, 'TOFT Crochet Kits (MINI)', 7, 'These mini TOFT kits contain:', 328, 11, '', '', 'https://naturalyarns.co.za/wp-content/uploads/2024/06/Mini-Atticus-the-Snake.jpg');
+
+
+--
+-- TOC entry 4858 (class 0 OID 24913)
+-- Dependencies: 216
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.users (userid, username, password, email, is_admin) VALUES (2, 'user2', 'userpassword2', 'useremail2@example.com', false);
+INSERT INTO public.users (userid, username, password, email, is_admin) VALUES (3, 'user3', 'userpassword3', 'useremail3@example.com', false);
+INSERT INTO public.users (userid, username, password, email, is_admin) VALUES (4, 'user4', 'userpassword4', 'usermail4@example.com', false);
+INSERT INTO public.users (userid, username, password, email, is_admin) VALUES (1, 'user1', 'userpassword1', 'useremail1@example.com', true);
+INSERT INTO public.users (userid, username, password, email, is_admin) VALUES (5, 'user7', 'user7password', 'user7@example.com', false);
+INSERT INTO public.users (userid, username, password, email, is_admin) VALUES (7, 'demo', 'demo123', 'demoemail', false);
+INSERT INTO public.users (userid, username, password, email, is_admin) VALUES (8, 'user8', 'userpassword8', 'user8@example.com', false);
+INSERT INTO public.users (userid, username, password, email, is_admin) VALUES (9, 'zoey', 'meep', 'zoeyvanwyk@gmail', false);
+INSERT INTO public.users (userid, username, password, email, is_admin) VALUES (10, 'alice', 'alice password', 'alice@email', false);
+INSERT INTO public.users (userid, username, password, email, is_admin) VALUES (6, 'user6', 'user6password', 'user6@example.com', false);
+
+
+--
+-- TOC entry 4872 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: category_categoryid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.category_categoryid_seq', 1, false);
+
+
+--
+-- TOC entry 4873 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: stock_item_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.stock_item_id_seq', 79, true);
+
+
+--
+-- TOC entry 4874 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: users_userid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_userid_seq', 10, true);
+
+
+--
+-- TOC entry 4706 (class 2606 OID 24933)
+-- Name: category category_categoryname_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.category
+    ADD CONSTRAINT category_categoryname_key UNIQUE (categoryname);
+
+
+--
+-- TOC entry 4708 (class 2606 OID 24931)
+-- Name: category category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.category
+    ADD CONSTRAINT category_pkey PRIMARY KEY (categoryid);
+
+
+--
+-- TOC entry 4710 (class 2606 OID 24944)
+-- Name: stock stock_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stock
+    ADD CONSTRAINT stock_name_key UNIQUE (name);
+
+
+--
+-- TOC entry 4712 (class 2606 OID 24942)
+-- Name: stock stock_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stock
+    ADD CONSTRAINT stock_pkey PRIMARY KEY (item_id);
+
+
+--
+-- TOC entry 4700 (class 2606 OID 24922)
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- TOC entry 4702 (class 2606 OID 24918)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (userid);
+
+
+--
+-- TOC entry 4704 (class 2606 OID 24920)
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- TOC entry 4713 (class 2606 OID 24945)
+-- Name: stock fk_category; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.stock
+    ADD CONSTRAINT fk_category FOREIGN KEY (categoryid) REFERENCES public.category(categoryid);
+
+
+-- Completed on 2024-09-08 17:53:39
+
+--
+-- PostgreSQL database dump complete
+--
+
